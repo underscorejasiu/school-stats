@@ -25,11 +25,13 @@ export async function POST(request: NextRequest) {
       units: 'm',
     };
 
-    // Add arrival time if provided
-    if (arrival) {
-      requestBody.location_type = 'arrival';
-      requestBody.arrival = arrival;
-    }
+    // Note: OpenRouteService isochrones API does not support time-dependent routing
+    // The API rejects both 'arrival' and 'departure' location_type values
+    // Time-dependent routing is only available for the directions API, not isochrones
+    // The arrival time parameter is accepted in our interface but not sent to the API
+    // Isochrones will show average travel times, not rush-hour specific times
+    // If time-dependent isochrones are needed, consider using the directions API
+    // to calculate multiple routes and then generate isochrones from those results
 
     const response = await fetch(`${ORS_API_URL}/${profile}`, {
       method: 'POST',

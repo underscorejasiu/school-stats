@@ -26,7 +26,7 @@ export default function Home() {
   const [transportMode, setTransportMode] = useState<TransportProfile>('driving-car');
   const [selectedPresets, setSelectedPresets] = useState<number[]>([]);
   const [customTime, setCustomTime] = useState<number | null>(null);
-  const [arrivalTime, setArrivalTime] = useState<string>('07:55'); // Default 7:55
+  const [rushHours, setRushHours] = useState<boolean>(false);
   const [isochroneData, setIsochroneData] = useState<IsochroneResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -67,9 +67,13 @@ export default function Home() {
     }
 
     // Combine presets and custom time, convert to seconds
+    // Apply 35% reduction if rush hours is enabled
     const timeRanges: number[] = [
-      ...selectedPresets.map((min) => min * 60),
-      ...(customTime ? [customTime * 60] : []),
+      ...selectedPresets.map((min) => {
+        const adjustedMin = rushHours ? Math.round(min * 0.65) : min;
+        return adjustedMin * 60;
+      }),
+      ...(customTime ? [Math.round((rushHours ? customTime * 0.65 : customTime) * 60)] : []),
     ];
 
     if (timeRanges.length === 0) {
@@ -81,13 +85,6 @@ export default function Home() {
     setError(null);
 
     try {
-      // Convert arrival time to ISO 8601 format
-      // Use today's date with the selected time
-      const today = new Date();
-      const [hours, minutes] = arrivalTime.split(':').map(Number);
-      today.setHours(hours, minutes, 0, 0);
-      const arrivalISO = today.toISOString();
-
       const response = await fetch('/api/isochrones', {
         method: 'POST',
         headers: {
@@ -97,7 +94,6 @@ export default function Home() {
           coordinates: selectedOrigin,
           profile: transportMode,
           ranges: timeRanges,
-          arrival: arrivalISO,
         }),
       });
 
@@ -114,7 +110,7 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  }, [selectedOrigin, transportMode, selectedPresets, customTime, arrivalTime]);
+  }, [selectedOrigin, transportMode, selectedPresets, customTime, rushHours]);
 
   useEffect(() => {
     fetchIsochrones();
@@ -181,7 +177,7 @@ export default function Home() {
     setSelectedOrigin(null);
     setSelectedPresets([]);
     setCustomTime(null);
-    setArrivalTime('07:55'); // Reset to default
+    setRushHours(false);
     setIsochroneData(null);
   }, []);
 
@@ -237,8 +233,8 @@ export default function Home() {
               customTime={customTime}
               onPresetToggle={handlePresetToggle}
               onCustomTimeChange={setCustomTime}
-              arrivalTime={arrivalTime}
-              onArrivalTimeChange={setArrivalTime}
+              rushHours={rushHours}
+              onRushHoursChange={setRushHours}
             />
 
             {selectedOrigin && (

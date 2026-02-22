@@ -70,6 +70,9 @@ function MapClickHandler({ onOriginSelect }: { onOriginSelect: (coords: [number,
 function IsochroneLayer({ data }: { data: IsochroneResponse | null }) {
   if (!data) return null;
 
+  // Create a unique key based on the data to force re-render when data changes
+  const dataKey = JSON.stringify(data.features.map(f => f.properties.value).sort());
+
   return (
     <>
       {data.features.map((feature, index) => {
@@ -79,7 +82,7 @@ function IsochroneLayer({ data }: { data: IsochroneResponse | null }) {
 
         return (
           <GeoJSON
-            key={index}
+            key={`${dataKey}-${index}-${timeSeconds}`}
             data={feature.geometry as any}
             style={{
               fillColor: color,
@@ -217,7 +220,7 @@ export default function Map({ schools, selectedOrigin, isochroneData, onOriginSe
         )}
 
         {/* Isochrone polygons */}
-        <IsochroneLayer data={isochroneData} />
+        <IsochroneLayer key={isochroneData ? JSON.stringify(isochroneData.features.map(f => f.properties.value).sort()) : 'no-data'} data={isochroneData} />
       </MapContainer>
     </div>
   );
