@@ -46,7 +46,13 @@ npm install
 OPENROUTESERVICE_API_KEY=your_api_key_here
 ```
 
-4. Run the development server:
+4. Generate geocoded school data (first time setup):
+```bash
+npm run geocode-schools
+```
+This will geocode all Wrocław schools from `data/output/merged-schools.json` and merge the coordinates into a new file `merged-schools-geocoded.json`. This may take a while due to API rate limits (approximately 1 request per second).
+
+5. Run the development server:
 ```bash
 npm run dev
 ```
@@ -59,8 +65,10 @@ npm run dev
 school-stats/
 ├── app/
 │   ├── api/
-│   │   └── isochrones/
-│   │       └── route.ts          # API route for OpenRouteService
+│   │   ├── isochrones/
+│   │   │   └── route.ts          # API route for OpenRouteService
+│   │   └── schools/
+│   │       └── route.ts          # API route for schools data
 │   ├── components/
 │   │   ├── Map.tsx                # Main map component with Leaflet
 │   │   ├── TransportSelector.tsx # Transport mode selector
@@ -68,9 +76,18 @@ school-stats/
 │   ├── layout.tsx                 # Root layout
 │   ├── page.tsx                   # Main page component
 │   └── globals.css                # Global styles
+├── data/
+│   ├── output/
+│   │   ├── merged-schools.json        # Merged school data (source)
+│   │   ├── merged-schools-geocoded.json # School data with coordinates (generated)
+│   │   └── geocode-cache.json         # Temporary cache during geocoding
+│   └── raw/                            # Raw data files
 ├── lib/
-│   ├── schools.ts                 # School data for Wrocław
+│   ├── schools.ts                 # School data loader with caching
+│   ├── geocoding.ts               # Geocoding utilities
 │   └── types.ts                   # TypeScript type definitions
+├── scripts/
+│   └── geocode-schools.ts         # Script to geocode all schools
 └── public/                        # Static assets
 ```
 
@@ -132,6 +149,30 @@ OPENROUTESERVICE_API_KEY=your_api_key_here
 - `npm run build` - Build for production
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
+- `npm run geocode-schools` - Geocode all schools (generates coordinates cache)
+- `npm run merge-schools` - Merge raw school data files
+
+## School Data
+
+The application loads school data from `data/output/merged-schools-geocoded.json`. This file contains:
+- School name, address, and location
+- Exam results by year
+- School type and public/private status
+- **Coordinates** (geocoded addresses) - added by the geocoding script
+
+Schools are filtered to only show those in Wrocław that have coordinates. The data is cached in memory for optimal performance (1 hour cache duration).
+
+### Geocoding
+
+Since the source data doesn't include coordinates, schools need to be geocoded first. The `geocode-schools` script:
+1. Loads all schools from `data/output/merged-schools.json`
+2. Filters for Wrocław schools
+3. Geocodes each address using OpenStreetMap Nominatim API
+4. Merges coordinates back into the school data
+5. Saves everything to `data/output/merged-schools-geocoded.json`
+6. Respects rate limits (1 request per second)
+
+The geocoded file contains all schools with coordinates added for Wrocław schools. If new schools are added or addresses change, re-run the geocoding script to update the geocoded file.
 
 ## Notes
 

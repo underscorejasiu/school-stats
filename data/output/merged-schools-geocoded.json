@@ -253,7 +253,11 @@
         }
       }
     },
-    "school_id": "026403-21P0D"
+    "school_id": "026403-21P0D",
+    "coordinates": [
+      16.9981472,
+      51.0774533
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -381,7 +385,11 @@
         }
       }
     },
-    "school_id": "026406-17P1C"
+    "school_id": "026406-17P1C",
+    "coordinates": [
+      17.0954942,
+      51.109577
+    ]
   },
   {
     "powiat": "Wrocławski",
@@ -637,7 +645,11 @@
         }
       }
     },
-    "school_id": "026403-0LP0Z"
+    "school_id": "026403-0LP0Z",
+    "coordinates": [
+      17.0208947,
+      51.0977758
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -765,7 +777,11 @@
         }
       }
     },
-    "school_id": "026403-18P0L"
+    "school_id": "026403-18P0L",
+    "coordinates": [
+      16.9907673,
+      51.0797338
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -893,7 +909,11 @@
         }
       }
     },
-    "school_id": "026406-56P0C"
+    "school_id": "026406-56P0C",
+    "coordinates": [
+      17.0486653,
+      51.1190477
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -1021,7 +1041,11 @@
         }
       }
     },
-    "school_id": "026404-14P0C"
+    "school_id": "026404-14P0C",
+    "coordinates": [
+      17.1360139,
+      51.1573364
+    ]
   },
   {
     "powiat": "Wrocławski",
@@ -1277,7 +1301,11 @@
         }
       }
     },
-    "school_id": "026405-05PNQ"
+    "school_id": "026405-05PNQ",
+    "coordinates": [
+      17.0187015,
+      51.1045849
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -1405,7 +1433,11 @@
         }
       }
     },
-    "school_id": "026403-92PNC"
+    "school_id": "026403-92PNC",
+    "coordinates": [
+      17.0313772,
+      51.0932112
+    ]
   },
   {
     "powiat": "Wrocławski",
@@ -1638,7 +1670,11 @@
         }
       }
     },
-    "school_id": "026406-03PNV"
+    "school_id": "026406-03PNV",
+    "coordinates": [
+      17.0571616,
+      51.1220975
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -1766,7 +1802,11 @@
         }
       }
     },
-    "school_id": "026402-65P06"
+    "school_id": "026402-65P06",
+    "coordinates": [
+      16.9564868,
+      51.1155803
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -1894,7 +1934,11 @@
         }
       }
     },
-    "school_id": "026403-07P09"
+    "school_id": "026403-07P09",
+    "coordinates": [
+      17.0454205,
+      51.102789
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -1999,7 +2043,11 @@
         }
       }
     },
-    "school_id": "026406-25P0Q"
+    "school_id": "026406-25P0Q",
+    "coordinates": [
+      17.0425521,
+      51.1227819
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -2104,7 +2152,11 @@
         }
       }
     },
-    "school_id": "026404-24P0Z"
+    "school_id": "026404-24P0Z",
+    "coordinates": [
+      17.1271584,
+      51.1610712
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -2232,7 +2284,11 @@
         }
       }
     },
-    "school_id": "026403-06P1F"
+    "school_id": "026403-06P1F",
+    "coordinates": [
+      17.0389941,
+      51.0687794
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -2313,7 +2369,11 @@
           "modal": 96
         }
       }
-    }
+    },
+    "coordinates": [
+      17.0068189,
+      51.0941358
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -2441,7 +2501,11 @@
         }
       }
     },
-    "school_id": "026403-39P0K"
+    "school_id": "026403-39P0K",
+    "coordinates": [
+      16.9940505,
+      51.0642703
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -2546,7 +2610,11 @@
         }
       }
     },
-    "school_id": "026403-94PNQ"
+    "school_id": "026403-94PNQ",
+    "coordinates": [
+      17.0216999,
+      51.0875638
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -2674,7 +2742,11 @@
         }
       }
     },
-    "school_id": "026402-79PNE"
+    "school_id": "026402-79PNE",
+    "coordinates": [
+      16.902119,
+      51.1695037
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -2802,7 +2874,11 @@
         }
       }
     },
-    "school_id": "026404-24P1U"
+    "school_id": "026404-24P1U",
+    "coordinates": [
+      17.0343457,
+      51.1266
+    ]
   },
   {
     "powiat": "Wrocławski",
@@ -3058,7 +3134,11 @@
         }
       }
     },
-    "school_id": "026404-17P0F"
+    "school_id": "026404-17P0F",
+    "coordinates": [
+      17.0277354,
+      51.1368675
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -3186,7 +3266,11 @@
         }
       }
     },
-    "school_id": "026406-03P1X"
+    "school_id": "026406-03P1X",
+    "coordinates": [
+      17.056585,
+      51.1092839
+    ]
   },
   {
     "powiat": "Wrocławski",
@@ -3442,7 +3526,11 @@
         }
       }
     },
-    "school_id": "026402-7CPNH"
+    "school_id": "026402-7CPNH",
+    "coordinates": [
+      17.0048386,
+      51.1106569
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -3524,7 +3612,11 @@
         }
       }
     },
-    "school_id": "026404-5DPNY"
+    "school_id": "026404-5DPNY",
+    "coordinates": [
+      17.12468,
+      51.1454318
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -3652,7 +3744,11 @@
         }
       }
     },
-    "school_id": "026403-20P0O"
+    "school_id": "026403-20P0O",
+    "coordinates": [
+      17.0112685,
+      51.070005
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -3780,7 +3876,11 @@
         }
       }
     },
-    "school_id": "026406-59P0F"
+    "school_id": "026406-59P0F",
+    "coordinates": [
+      17.0459261,
+      51.118853
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -3862,7 +3962,11 @@
         }
       }
     },
-    "school_id": "026402-74P04"
+    "school_id": "026402-74P04",
+    "coordinates": [
+      16.9712627,
+      51.1354193
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -3990,7 +4094,11 @@
         }
       }
     },
-    "school_id": "026403-59P0U"
+    "school_id": "026403-59P0U",
+    "coordinates": [
+      17.0051675,
+      51.0852496
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -4072,7 +4180,11 @@
         }
       }
     },
-    "school_id": "026403-75P0C"
+    "school_id": "026403-75P0C",
+    "coordinates": [
+      17.0080473,
+      51.0765631
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -4108,7 +4220,11 @@
         }
       }
     },
-    "school_id": "026405-84P0C"
+    "school_id": "026405-84P0C",
+    "coordinates": [
+      17.0154908,
+      51.1150305
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -4144,7 +4260,11 @@
         }
       }
     },
-    "school_id": "026404-57P1U"
+    "school_id": "026404-57P1U",
+    "coordinates": [
+      17.1167044,
+      51.1447715
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -4272,7 +4392,11 @@
         }
       }
     },
-    "school_id": "026403-80P0I"
+    "school_id": "026403-80P0I",
+    "coordinates": [
+      17.0435236,
+      51.0874444
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -4400,7 +4524,11 @@
         }
       }
     },
-    "school_id": "026406-78P00"
+    "school_id": "026406-78P00",
+    "coordinates": [
+      17.0936481,
+      51.105363
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -4528,7 +4656,11 @@
         }
       }
     },
-    "school_id": "026402-53P05"
+    "school_id": "026402-53P05",
+    "coordinates": [
+      17.0071825,
+      51.0969646
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -4609,7 +4741,11 @@
           "modal": 93
         }
       }
-    }
+    },
+    "coordinates": [
+      17.0209476,
+      51.0880467
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -4737,7 +4873,11 @@
         }
       }
     },
-    "school_id": "026402-0KP0R"
+    "school_id": "026402-0KP0R",
+    "coordinates": [
+      17.0066592,
+      51.0996584
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -4865,7 +5005,11 @@
         }
       }
     },
-    "school_id": "026405-24P0I"
+    "school_id": "026405-24P0I",
+    "coordinates": [
+      17.036172,
+      51.103598
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -4993,7 +5137,11 @@
         }
       }
     },
-    "school_id": "026405-02PNN"
+    "school_id": "026405-02PNN",
+    "coordinates": [
+      17.025474,
+      51.1040624
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -5121,7 +5269,11 @@
         }
       }
     },
-    "school_id": "026403-23P0R"
+    "school_id": "026403-23P0R",
+    "coordinates": [
+      17.0231731,
+      51.0933947
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -5249,7 +5401,11 @@
         }
       }
     },
-    "school_id": "026406-06P05"
+    "school_id": "026406-06P05",
+    "coordinates": [
+      17.0556949,
+      51.1206733
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -5377,7 +5533,11 @@
         }
       }
     },
-    "school_id": "026404-29P0G"
+    "school_id": "026404-29P0G",
+    "coordinates": [
+      17.1071947,
+      51.1322736
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -5505,7 +5665,11 @@
         }
       }
     },
-    "school_id": "026402-11P12"
+    "school_id": "026402-11P12",
+    "coordinates": [
+      16.9877931,
+      51.1282662
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -5633,7 +5797,11 @@
         }
       }
     },
-    "school_id": "026403-35P0S"
+    "school_id": "026403-35P0S",
+    "coordinates": [
+      17.0536101,
+      51.0860016
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -5761,7 +5929,11 @@
         }
       }
     },
-    "school_id": "026406-08P0J"
+    "school_id": "026406-08P0J",
+    "coordinates": [
+      17.0604434,
+      51.1096428
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -5889,7 +6061,11 @@
         }
       }
     },
-    "school_id": "026404-05P0E"
+    "school_id": "026404-05P0E",
+    "coordinates": [
+      17.034858,
+      51.1417522
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -5994,7 +6170,11 @@
         }
       }
     },
-    "school_id": "026403-08P0Y"
+    "school_id": "026403-08P0Y",
+    "coordinates": [
+      17.0158494,
+      51.0833631
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -6122,7 +6302,11 @@
         }
       }
     },
-    "school_id": "026405-15P0K"
+    "school_id": "026405-15P0K",
+    "coordinates": [
+      17.0095165,
+      51.1188087
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -6250,7 +6434,11 @@
         }
       }
     },
-    "school_id": "026405-21P0F"
+    "school_id": "026405-21P0F",
+    "coordinates": [
+      17.035766,
+      51.1060973
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -6378,7 +6566,11 @@
         }
       }
     },
-    "school_id": "026402-03P1T"
+    "school_id": "026402-03P1T",
+    "coordinates": [
+      16.9716844,
+      51.1267732
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -6506,7 +6698,11 @@
         }
       }
     },
-    "school_id": "026402-29P0E"
+    "school_id": "026402-29P0E",
+    "coordinates": [
+      16.9859595,
+      51.0941678
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -6634,7 +6830,11 @@
         }
       }
     },
-    "school_id": "026406-28P0T"
+    "school_id": "026406-28P0T",
+    "coordinates": [
+      17.03538,
+      51.121
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -6762,7 +6962,11 @@
         }
       }
     },
-    "school_id": "026406-02P0D"
+    "school_id": "026406-02P0D",
+    "coordinates": [
+      17.0496903,
+      51.120074
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -6890,7 +7094,11 @@
         }
       }
     },
-    "school_id": "026403-25P05"
+    "school_id": "026403-25P05",
+    "coordinates": [
+      17.0374981,
+      51.0933187
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -7018,7 +7226,11 @@
         }
       }
     },
-    "school_id": "026404-39P1Y"
+    "school_id": "026404-39P1Y",
+    "coordinates": [
+      17.1097265,
+      51.146866
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -7146,7 +7358,11 @@
         }
       }
     },
-    "school_id": "026403-27P0J"
+    "school_id": "026403-27P0J",
+    "coordinates": [
+      17.0111134,
+      51.0882894
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -7274,7 +7490,11 @@
         }
       }
     },
-    "school_id": "026403-38P0V"
+    "school_id": "026403-38P0V",
+    "coordinates": [
+      17.057584,
+      51.0960903
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -7402,7 +7622,11 @@
         }
       }
     },
-    "school_id": "026406-36P02"
+    "school_id": "026406-36P02",
+    "coordinates": [
+      17.1103791,
+      51.1030274
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -7530,7 +7754,11 @@
         }
       }
     },
-    "school_id": "026402-03P0Y"
+    "school_id": "026402-03P0Y",
+    "coordinates": [
+      16.9070983,
+      51.1626762
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -7658,7 +7886,11 @@
         }
       }
     },
-    "school_id": "026406-22P0N"
+    "school_id": "026406-22P0N",
+    "coordinates": [
+      17.0994105,
+      51.1003826
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -7786,7 +8018,11 @@
         }
       }
     },
-    "school_id": "026406-19P0V"
+    "school_id": "026406-19P0V",
+    "coordinates": [
+      17.0554578,
+      51.1172382
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -7914,7 +8150,11 @@
         }
       }
     },
-    "school_id": "026406-01PNH"
+    "school_id": "026406-01PNH",
+    "coordinates": [
+      17.0994105,
+      51.1003826
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -8042,7 +8282,11 @@
         }
       }
     },
-    "school_id": "026402-23P13"
+    "school_id": "026402-23P13",
+    "coordinates": [
+      17.0115712,
+      51.0984918
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -8170,7 +8414,11 @@
         }
       }
     },
-    "school_id": "026402-31P1C"
+    "school_id": "026402-31P1C",
+    "coordinates": [
+      16.9892711,
+      51.0824524
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -8298,7 +8546,11 @@
         }
       }
     },
-    "school_id": "026402-18P1X"
+    "school_id": "026402-18P1X",
+    "coordinates": [
+      16.859975,
+      51.1507421
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -8403,7 +8655,11 @@
         }
       }
     },
-    "school_id": "026403-16P07"
+    "school_id": "026403-16P07",
+    "coordinates": [
+      17.0110127,
+      51.0797563
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -8531,7 +8787,11 @@
         }
       }
     },
-    "school_id": "026406-29P0I"
+    "school_id": "026406-29P0I",
+    "coordinates": [
+      17.0529163,
+      51.1276535
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -8659,7 +8919,11 @@
         }
       }
     },
-    "school_id": "026404-13P0N"
+    "school_id": "026404-13P0N",
+    "coordinates": [
+      17.1053564,
+      51.166045
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -8787,7 +9051,11 @@
         }
       }
     },
-    "school_id": "026403-30P0B"
+    "school_id": "026403-30P0B",
+    "coordinates": [
+      17.0814426,
+      51.0594598
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -8915,7 +9183,11 @@
         }
       }
     },
-    "school_id": "026402-15P1U"
+    "school_id": "026402-15P1U",
+    "coordinates": [
+      16.9453208,
+      51.1273057
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -9043,7 +9315,11 @@
         }
       }
     },
-    "school_id": "026403-12P0F"
+    "school_id": "026403-12P0F",
+    "coordinates": [
+      17.0162194,
+      51.0974938
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -9171,7 +9447,11 @@
         }
       }
     },
-    "school_id": "026404-32P08"
+    "school_id": "026404-32P08",
+    "coordinates": [
+      17.0578439,
+      51.1351712
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -9299,7 +9579,11 @@
         }
       }
     },
-    "school_id": "026402-10P1D"
+    "school_id": "026402-10P1D",
+    "coordinates": [
+      16.9622163,
+      51.1061456
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -9427,7 +9711,11 @@
         }
       }
     },
-    "school_id": "026405-04P08"
+    "school_id": "026405-04P08",
+    "coordinates": [
+      17.0063656,
+      51.1171014
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -9555,7 +9843,11 @@
         }
       }
     },
-    "school_id": "026403-34P03"
+    "school_id": "026403-34P03",
+    "coordinates": [
+      17.0465657,
+      51.1056234
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -9683,7 +9975,11 @@
         }
       }
     },
-    "school_id": "026403-26P0U"
+    "school_id": "026403-26P0U",
+    "coordinates": [
+      17.042431,
+      51.0788769
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -9811,7 +10107,11 @@
         }
       }
     },
-    "school_id": "026406-37P0R"
+    "school_id": "026406-37P0R",
+    "coordinates": [
+      17.0394026,
+      51.1216985
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -9939,7 +10239,11 @@
         }
       }
     },
-    "school_id": "026402-26P0B"
+    "school_id": "026402-26P0B",
+    "coordinates": [
+      16.8931987,
+      51.1511177
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -10067,7 +10371,11 @@
         }
       }
     },
-    "school_id": "026403-40P0Y"
+    "school_id": "026403-40P0Y",
+    "coordinates": [
+      17.0808981,
+      51.0779201
+    ]
   },
   {
     "powiat": "Wrocławski",
@@ -10323,7 +10631,11 @@
         }
       }
     },
-    "school_id": "026405-36P0J"
+    "school_id": "026405-36P0J",
+    "coordinates": [
+      17.0129625,
+      51.1186742
+    ]
   },
   {
     "powiat": "Wrocławski",
@@ -10579,7 +10891,11 @@
         }
       }
     },
-    "school_id": "026402-31P0H"
+    "school_id": "026402-31P0H",
+    "coordinates": [
+      16.9510847,
+      51.1154826
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -10707,7 +11023,11 @@
         }
       }
     },
-    "school_id": "026402-16P1J"
+    "school_id": "026402-16P1J",
+    "coordinates": [
+      16.97053,
+      51.122805
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -10812,7 +11132,11 @@
         }
       }
     },
-    "school_id": "026402-90P0M"
+    "school_id": "026402-90P0M",
+    "coordinates": [
+      16.9831958,
+      51.1276415
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -10940,7 +11264,11 @@
         }
       }
     },
-    "school_id": "026404-49P0Q"
+    "school_id": "026404-49P0Q",
+    "coordinates": [
+      17.1310475,
+      51.1441822
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -11068,7 +11396,11 @@
         }
       }
     },
-    "school_id": "026404-01P0M"
+    "school_id": "026404-01P0M",
+    "coordinates": [
+      17.0728685,
+      51.1469229
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -11196,7 +11528,11 @@
         }
       }
     },
-    "school_id": "026404-0NP0W"
+    "school_id": "026404-0NP0W",
+    "coordinates": [
+      16.9901948,
+      51.1425433
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -11324,7 +11660,11 @@
         }
       }
     },
-    "school_id": "026403-13P04"
+    "school_id": "026403-13P04",
+    "coordinates": [
+      17.0269709,
+      51.0556981
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -11452,7 +11792,11 @@
         }
       }
     },
-    "school_id": "026402-11P07"
+    "school_id": "026402-11P07",
+    "coordinates": [
+      16.9553071,
+      51.1373659
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -11580,7 +11924,11 @@
         }
       }
     },
-    "school_id": "026406-03P02"
+    "school_id": "026406-03P02",
+    "coordinates": [
+      17.0269972,
+      51.1193498
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -11708,7 +12056,11 @@
         }
       }
     },
-    "school_id": "026402-09P04"
+    "school_id": "026402-09P04",
+    "coordinates": [
+      16.9655446,
+      51.0786996
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -11836,7 +12188,11 @@
         }
       }
     },
-    "school_id": "026402-09P1Z"
+    "school_id": "026402-09P1Z",
+    "coordinates": [
+      16.9261255,
+      51.121036
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -11964,7 +12320,11 @@
         }
       }
     },
-    "school_id": "026404-18P1Z"
+    "school_id": "026404-18P1Z",
+    "coordinates": [
+      17.1545832,
+      51.1029885
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -12092,7 +12452,11 @@
         }
       }
     },
-    "school_id": "026402-08P1A"
+    "school_id": "026402-08P1A",
+    "coordinates": [
+      16.928434,
+      51.1538021
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -12220,7 +12584,11 @@
         }
       }
     },
-    "school_id": "026402-12P0W"
+    "school_id": "026402-12P0W",
+    "coordinates": [
+      16.8870771,
+      51.1347454
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -12348,7 +12716,11 @@
         }
       }
     },
-    "school_id": "026402-07P1L"
+    "school_id": "026402-07P1L",
+    "coordinates": [
+      16.9505101,
+      51.0952907
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -12430,7 +12802,11 @@
         }
       }
     },
-    "school_id": "026403-19P0A"
+    "school_id": "026403-19P0A",
+    "coordinates": [
+      16.989466,
+      51.074309
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -12558,7 +12934,11 @@
         }
       }
     },
-    "school_id": "026403-10P01"
+    "school_id": "026403-10P01",
+    "coordinates": [
+      17.039172,
+      51.0859969
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -12686,7 +13066,11 @@
         }
       }
     },
-    "school_id": "026402-21P1P"
+    "school_id": "026402-21P1P",
+    "coordinates": [
+      16.9801628,
+      51.1233404
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -12814,7 +13198,11 @@
         }
       }
     },
-    "school_id": "026402-99P0V"
+    "school_id": "026402-99P0V",
+    "coordinates": [
+      17.0035066,
+      51.0970711
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -12942,7 +13330,11 @@
         }
       }
     },
-    "school_id": "026406-17P0H"
+    "school_id": "026406-17P0H",
+    "coordinates": [
+      17.0954942,
+      51.109577
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -13070,7 +13462,11 @@
         }
       }
     },
-    "school_id": "026402-66P1Q"
+    "school_id": "026402-66P1Q",
+    "coordinates": [
+      16.9990559,
+      51.091131
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -13175,7 +13571,11 @@
         }
       }
     },
-    "school_id": "026402-50P1X"
+    "school_id": "026402-50P1X",
+    "coordinates": [
+      16.9976218,
+      51.1249062
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -13280,7 +13680,11 @@
         }
       }
     },
-    "school_id": "026403-57P0G"
+    "school_id": "026403-57P0G",
+    "coordinates": [
+      17.041753,
+      51.072024
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -13408,7 +13812,11 @@
         }
       }
     },
-    "school_id": "026403-50P0L"
+    "school_id": "026403-50P0L",
+    "coordinates": [
+      17.0225123,
+      51.1005984
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -13513,7 +13921,11 @@
         }
       }
     },
-    "school_id": "026403-97PNT"
+    "school_id": "026403-97PNT",
+    "coordinates": [
+      17.0616183,
+      51.0937426
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -13641,7 +14053,11 @@
         }
       }
     },
-    "school_id": "026405-06PNF"
+    "school_id": "026405-06PNF",
+    "coordinates": [
+      17.0021117,
+      51.120202
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -13769,7 +14185,11 @@
         }
       }
     },
-    "school_id": "026403-99PN7"
+    "school_id": "026403-99PN7",
+    "coordinates": [
+      17.0220595,
+      51.0987477
+    ]
   },
   {
     "powiat": "Wrocławski",
@@ -13910,7 +14330,11 @@
         }
       }
     },
-    "school_id": "026405-07PN4"
+    "school_id": "026405-07PN4",
+    "coordinates": [
+      17.0410187,
+      51.1111146
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -14014,7 +14438,11 @@
           "modal": null
         }
       }
-    }
+    },
+    "coordinates": [
+      17.0787451,
+      51.1331992
+    ]
   },
   {
     "powiat": "Wrocławski",
@@ -14178,7 +14606,11 @@
         }
       }
     },
-    "school_id": "026402-7HPNY"
+    "school_id": "026402-7HPNY",
+    "coordinates": [
+      16.9254804,
+      51.1362846
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -14306,7 +14738,11 @@
         }
       }
     },
-    "school_id": "026402-7KPN1"
+    "school_id": "026402-7KPN1",
+    "coordinates": [
+      17.0048386,
+      51.1106569
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -14434,7 +14870,11 @@
         }
       }
     },
-    "school_id": "026402-7LPNQ"
+    "school_id": "026402-7LPNQ",
+    "coordinates": [
+      16.9910034,
+      51.1124856
+    ]
   },
   {
     "powiat": "Wrocławski",
@@ -14818,7 +15258,11 @@
         }
       }
     },
-    "school_id": "026402-7NPN4"
+    "school_id": "026402-7NPN4",
+    "coordinates": [
+      16.9842877,
+      51.1113387
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -14854,7 +15298,11 @@
         }
       }
     },
-    "school_id": "026404-98PN1"
+    "school_id": "026404-98PN1",
+    "coordinates": [
+      17.0564186,
+      51.1360819
+    ]
   },
   {
     "powiat": "Wrocławski",
@@ -15227,7 +15675,11 @@
         }
       }
     },
-    "school_id": "026402-21P3F"
+    "school_id": "026402-21P3F",
+    "coordinates": [
+      16.9801628,
+      51.1233404
+    ]
   },
   {
     "powiat": "Wrocławski",
@@ -16031,7 +16483,11 @@
         }
       }
     },
-    "school_id": "026404-9BPN4"
+    "school_id": "026404-9BPN4",
+    "coordinates": [
+      17.0048009,
+      51.1756701
+    ]
   },
   {
     "powiat": "Wrocławski",
@@ -16963,7 +17419,11 @@
         }
       }
     },
-    "school_id": "026405-08PNT"
+    "school_id": "026405-08PNT",
+    "coordinates": [
+      17.0303066,
+      51.1068024
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -17091,7 +17551,11 @@
         }
       }
     },
-    "school_id": "026406-14P0E"
+    "school_id": "026406-14P0E",
+    "coordinates": [
+      17.0823232,
+      51.1203962
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -17219,7 +17683,11 @@
         }
       }
     },
-    "school_id": "026403-68P0S"
+    "school_id": "026403-68P0S",
+    "coordinates": [
+      16.9730803,
+      51.064641
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -17347,7 +17815,11 @@
         }
       }
     },
-    "school_id": "026402-73P1A"
+    "school_id": "026402-73P1A",
+    "coordinates": [
+      16.9666624,
+      51.1406303
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -17475,7 +17947,11 @@
         }
       }
     },
-    "school_id": "026405-54P0F"
+    "school_id": "026405-54P0F",
+    "coordinates": [
+      17.0179541,
+      51.1141767
+    ]
   },
   {
     "powiat": "Wrocławski",
@@ -18755,7 +19231,11 @@
         }
       }
     },
-    "school_id": "026404-69P00"
+    "school_id": "026404-69P00",
+    "coordinates": [
+      17.0280286,
+      51.1466273
+    ]
   },
   {
     "powiat": "Wrocławski",
@@ -19907,7 +20387,11 @@
         }
       }
     },
-    "school_id": "026402-76PNB"
+    "school_id": "026402-76PNB",
+    "coordinates": [
+      16.8845214,
+      51.1343464
+    ]
   },
   {
     "powiat": "Wrocławski",
@@ -20291,7 +20775,11 @@
         }
       }
     },
-    "school_id": "026403-60P08"
+    "school_id": "026403-60P08",
+    "coordinates": [
+      17.0341602,
+      51.0878236
+    ]
   },
   {
     "powiat": "Wrocławski",
@@ -20710,7 +21198,11 @@
         }
       }
     },
-    "school_id": "026405-58P07"
+    "school_id": "026405-58P07",
+    "coordinates": [
+      17.0241321,
+      51.1027743
+    ]
   },
   {
     "powiat": "Wrocław",
@@ -20791,6 +21283,10 @@
           "modal": 100
         }
       }
-    }
+    },
+    "coordinates": [
+      17.0241321,
+      51.1027743
+    ]
   }
 ]

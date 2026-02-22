@@ -2,8 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import { schools } from '@/lib/schools';
-import { TransportProfile, IsochroneResponse } from '@/lib/types';
+import { School, TransportProfile, IsochroneResponse } from '@/lib/types';
 import TransportSelector from './components/TransportSelector';
 import TimeRangeSelector from './components/TimeRangeSelector';
 
@@ -18,6 +17,7 @@ const Map = dynamic(() => import('./components/Map'), {
 });
 
 export default function Home() {
+  const [schools, setSchools] = useState<School[]>([]);
   const [selectedOrigin, setSelectedOrigin] = useState<[number, number] | null>(null);
   const [transportMode, setTransportMode] = useState<TransportProfile>('driving-car');
   const [selectedPresets, setSelectedPresets] = useState<number[]>([]);
@@ -25,6 +25,27 @@ export default function Home() {
   const [isochroneData, setIsochroneData] = useState<IsochroneResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [schoolsLoading, setSchoolsLoading] = useState(true);
+
+  // Load schools on mount
+  useEffect(() => {
+    async function loadSchools() {
+      try {
+        const response = await fetch('/api/schools');
+        if (!response.ok) {
+          throw new Error('Failed to load schools');
+        }
+        const data = await response.json();
+        setSchools(data);
+      } catch (err) {
+        console.error('Error loading schools:', err);
+        setError('Failed to load schools data');
+      } finally {
+        setSchoolsLoading(false);
+      }
+    }
+    loadSchools();
+  }, []);
 
   const fetchIsochrones = useCallback(async () => {
     if (!selectedOrigin) {
@@ -159,12 +180,18 @@ export default function Home() {
 
         {/* Map */}
         <main className="flex-1 relative">
-          <Map
-            schools={schools}
-            selectedOrigin={selectedOrigin}
-            isochroneData={isochroneData}
-            onOriginSelect={setSelectedOrigin}
-          />
+          {schoolsLoading ? (
+            <div className="w-full h-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
+              <p className="text-gray-600 dark:text-gray-400">Loading schools...</p>
+            </div>
+          ) : (
+            <Map
+              schools={schools}
+              selectedOrigin={selectedOrigin}
+              isochroneData={isochroneData}
+              onOriginSelect={setSelectedOrigin}
+            />
+          )}
         </main>
       </div>
     </div>

@@ -1,75 +1,104 @@
 import { School } from './types';
+import { readFileSync, existsSync } from 'fs';
+import { join } from 'path';
 
-// Schools in Wrocław, Poland
-export const schools: School[] = [
-  {
-    id: '1',
-    name: 'Liceum Ogólnokształcące nr I',
-    coordinates: [17.0385, 51.1079],
-    address: 'ul. Plac Wolności 1',
-    type: 'High School',
-  },
-  {
-    id: '2',
-    name: 'Szkoła Podstawowa nr 1',
-    coordinates: [17.0300, 51.1100],
-    address: 'ul. Świdnicka 1',
-    type: 'Primary School',
-  },
-  {
-    id: '3',
-    name: 'Gimnazjum nr 5',
-    coordinates: [17.0450, 51.1050],
-    address: 'ul. Legnicka 30',
-    type: 'Middle School',
-  },
-  {
-    id: '4',
-    name: 'Liceum Ogólnokształcące nr III',
-    coordinates: [17.0200, 51.1150],
-    address: 'ul. Kazimierza Wielkiego 1',
-    type: 'High School',
-  },
-  {
-    id: '5',
-    name: 'Szkoła Podstawowa nr 15',
-    coordinates: [17.0500, 51.1000],
-    address: 'ul. Grabiszyńska 236',
-    type: 'Primary School',
-  },
-  {
-    id: '6',
-    name: 'Technikum nr 1',
-    coordinates: [17.0150, 51.1200],
-    address: 'ul. Powstańców Śląskich 95',
-    type: 'Technical School',
-  },
-  {
-    id: '7',
-    name: 'Szkoła Podstawowa nr 84',
-    coordinates: [17.0550, 51.0950],
-    address: 'ul. Głogowska 30',
-    type: 'Primary School',
-  },
-  {
-    id: '8',
-    name: 'Liceum Ogólnokształcące nr V',
-    coordinates: [17.0100, 51.1250],
-    address: 'ul. Grochowa 13',
-    type: 'High School',
-  },
-  {
-    id: '9',
-    name: 'Szkoła Podstawowa nr 63',
-    coordinates: [17.0600, 51.0900],
-    address: 'ul. Legnicka 40',
-    type: 'Primary School',
-  },
-  {
-    id: '10',
-    name: 'Gimnazjum nr 13',
-    coordinates: [17.0050, 51.1300],
-    address: 'ul. Kamienna 16',
-    type: 'Middle School',
-  },
-];
+// Raw school data interface matching the geocoded JSON structure
+interface RawSchoolData {
+  powiat: string;
+  gmina: string;
+  RSPO: string;
+  type: string;
+  public: string;
+  name: string;
+  city: string;
+  address: string;
+  school_id?: string;
+  yearly_results?: Record<string, any>;
+  coordinates?: [number, number]; // [lng, lat] - added by geocoding
+}
+
+// Cache for loaded schools data
+let cachedSchools: School[] | null = null;
+let cacheTimestamp: number = 0;
+const CACHE_DURATION = 1000 * 60 * 60; // 1 hour cache
+
+/**
+ * Loads schools from the geocoded JSON file
+ */
+function loadSchoolsData(): RawSchoolData[] {
+  const dataPath = join(process.cwd(), 'data', 'output', 'merged-schools-geocoded.json');
+  
+  if (!existsSync(dataPath)) {
+    console.warn('Geocoded schools file not found. Run "npm run geocode-schools" to generate it.');
+    return [];
+  }
+
+  const fileContent = readFileSync(dataPath, 'utf-8');
+  return JSON.parse(fileContent) as RawSchoolData[];
+}
+
+/**
+ * Transforms raw school data to School interface
+ * Filters for schools in Wrocław that have coordinates
+ */
+function transformSchoolData(rawSchool: RawSchoolData): School | null {
+  // Filter for Wrocław schools
+  const isWroclaw = 
+    rawSchool.powiat === 'Wrocław' || 
+    rawSchool.city === 'Wrocław' ||
+    rawSchool.gmina === 'Wrocław';
+
+  if (!isWroclaw) {
+    return null;
+  }
+
+  // Skip schools without coordinates
+  if (!rawSchool.coordinates) {
+    return null;
+  }
+
+  return {
+    id: rawSchool.RSPO,
+    name: rawSchool.name,
+    coordinates: rawSchool.coordinates,
+    address: rawSchool.address ? `${rawSchool.address}, ${rawSchool.city}` : undefined,
+    type: rawSchool.type || undefined,
+  };
+}
+
+/**
+ * Gets all schools from the cached data
+ * Uses in-memory cache to avoid reading the file on every request
+ * This is synchronous and optimized for performance
+ */
+export function getSchools(): School[] {
+  const now = Date.now();
+  
+  // Return cached data if still valid
+  if (cachedSchools && (now - cacheTimestamp) < CACHE_DURATION) {
+    return cachedSchools;
+  }
+
+  // Load and transform data
+  const rawData = loadSchoolsData();
+  const transformed = rawData
+    .map(transformSchoolData)
+    .filter((school): school is School => school !== null);
+
+  // Update cache
+  cachedSchools = transformed;
+  cacheTimestamp = now;
+
+  return transformed;
+}
+
+/**
+ * Gets a single school by RSPO ID
+ */
+export function getSchoolById(rspo: string): School | undefined {
+  const schools = getSchools();
+  return schools.find(school => school.id === rspo);
+}
+
+// Export schools array - computed on first access and cached
+export const schools: School[] = getSchools();

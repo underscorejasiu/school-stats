@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# geocoding cache (intermediate file used during geocoding process)
+data/output/geocode-cache.json
