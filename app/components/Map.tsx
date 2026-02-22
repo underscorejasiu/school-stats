@@ -3,9 +3,8 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, GeoJSON } from 'react-leaflet';
 import L from 'leaflet';
-import { School } from '@/lib/types';
+import { SchoolWithPosition } from '@/lib/types';
 import { IsochroneResponse } from '@/lib/types';
-import { isPointInIsochrone } from '@/lib/geometry';
 
 // Fix for default marker icons in Next.js
 const defaultIcon = L.icon({
@@ -21,10 +20,30 @@ const defaultIcon = L.icon({
 L.Marker.prototype.options.icon = defaultIcon;
 
 interface MapProps {
-  schools: School[];
+  schools: SchoolWithPosition[];
   selectedOrigin: [number, number] | null;
   isochroneData: IsochroneResponse | null;
   onOriginSelect: (coordinates: [number, number]) => void;
+}
+
+/**
+ * Creates a custom marker icon with position number
+ */
+function createPositionedIcon(position: number): L.Icon {
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="41" viewBox="0 0 32 41">
+      <path d="M16 0C7.164 0 0 7.164 0 16c0 11.045 16 25 16 25s16-13.955 16-25C32 7.164 24.836 0 16 0z" fill="#3388ff" stroke="#fff" stroke-width="1"/>
+      <circle cx="16" cy="16" r="10" fill="#fff"/>
+      <text x="16" y="21" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#3388ff">${position}</text>
+    </svg>
+  `;
+  
+  return L.icon({
+    iconUrl: 'data:image/svg+xml;base64,' + btoa(svg),
+    iconSize: [32, 41],
+    iconAnchor: [16, 41],
+    popupAnchor: [0, -41],
+  });
 }
 
 // Color palette for different time ranges
@@ -90,18 +109,8 @@ export default function Map({ schools, selectedOrigin, isochroneData, onOriginSe
     setIsClient(true);
   }, []);
 
-  // Filter schools to only show those within isochrone polygons when isochrones are active
-  const visibleSchools = useMemo(() => {
-    if (!isochroneData || !isochroneData.features.length) {
-      // No isochrones active, show all schools
-      return schools;
-    }
-
-    // Filter schools that are within any isochrone polygon
-    return schools.filter((school) =>
-      isPointInIsochrone(school.coordinates, isochroneData)
-    );
-  }, [schools, isochroneData]);
+  // Schools are already filtered and sorted by the parent component
+  const visibleSchools = schools;
 
   // Wrocław center coordinates
   const center: [number, number] = [51.1079, 17.0385];
@@ -131,10 +140,19 @@ export default function Map({ schools, selectedOrigin, isochroneData, onOriginSe
 
         {/* School markers - only show schools within isochrone when isochrones are active */}
         {visibleSchools.map((school) => (
-          <Marker key={school.id} position={[school.coordinates[1], school.coordinates[0]]}>
+          <Marker
+            key={school.id}
+            position={[school.coordinates[1], school.coordinates[0]]}
+            icon={createPositionedIcon(school.position)}
+          >
             <Popup>
               <div className="text-sm">
-                <strong>{school.name}</strong>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="flex-shrink-0 w-6 h-6 bg-blue-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                    {school.position}
+                  </span>
+                  <strong>{school.name}</strong>
+                </div>
                 {school.address && (
                   <>
                     <br />
@@ -145,6 +163,14 @@ export default function Map({ schools, selectedOrigin, isochroneData, onOriginSe
                   <>
                     <br />
                     <span className="text-gray-500 text-xs">{school.type}</span>
+                  </>
+                )}
+                {school.sortValue !== null && (
+                  <>
+                    <br />
+                    <span className="text-gray-500 text-xs">
+                      Score: {school.sortValue.toFixed(1)}
+                    </span>
                   </>
                 )}
               </div>

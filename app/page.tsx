@@ -2,10 +2,12 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import dynamic from 'next/dynamic';
-import { School, TransportProfile, IsochroneResponse } from '@/lib/types';
+import { School, TransportProfile, IsochroneResponse, SortMetric, SchoolWithPosition } from '@/lib/types';
 import { isPointInIsochrone } from '@/lib/geometry';
+import { getSortValue } from '@/lib/statistics';
 import TransportSelector from './components/TransportSelector';
 import TimeRangeSelector from './components/TimeRangeSelector';
+import SchoolList from './components/SchoolList';
 
 // Dynamically import Map component to avoid SSR issues
 const Map = dynamic(() => import('./components/Map'), {
@@ -27,6 +29,9 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [schoolsLoading, setSchoolsLoading] = useState(true);
+  const [sortMetric, setSortMetric] = useState<SortMetric>('last_4_years_avg_avg_all');
+  const [rightPanelVisible, setRightPanelVisible] = useState(true);
+  const [rightPanelWidth, setRightPanelWidth] = useState(384); // Default: w-96 = 384px
 
   // Load schools on mount
   useEffect(() => {
@@ -106,15 +111,37 @@ export default function Home() {
     );
   };
 
-  // Calculate visible schools count when isochrones are active
-  const visibleSchoolsCount = useMemo(() => {
+  // Filter visible schools based on isochrones
+  const visibleSchools = useMemo(() => {
     if (!isochroneData || !isochroneData.features.length) {
-      return schools.length;
+      return schools;
     }
     return schools.filter((school) =>
       isPointInIsochrone(school.coordinates, isochroneData)
-    ).length;
+    );
   }, [schools, isochroneData]);
+
+  // Sort and position schools based on selected metric
+  const sortedSchoolsWithPositions = useMemo(() => {
+    const schoolsWithValues = visibleSchools.map((school) => ({
+      ...school,
+      sortValue: getSortValue(school, sortMetric),
+    }));
+
+    // Sort descending (highest scores first), nulls go to the end
+    const sorted = schoolsWithValues.sort((a, b) => {
+      if (a.sortValue === null && b.sortValue === null) return 0;
+      if (a.sortValue === null) return 1;
+      if (b.sortValue === null) return -1;
+      return b.sortValue - a.sortValue;
+    });
+
+    // Add positions
+    return sorted.map((school, index) => ({
+      ...school,
+      position: index + 1,
+    })) as SchoolWithPosition[];
+  }, [visibleSchools, sortMetric]);
 
   return (
     <div className="flex flex-col h-screen w-full">
@@ -179,7 +206,7 @@ export default function Home() {
                   Schools in Range:
                 </p>
                 <p className="text-xs text-gray-600 dark:text-gray-400">
-                  {visibleSchoolsCount} of {schools.length} schools visible
+                  {visibleSchools.length} of {schools.length} schools visible
                   <br />
                   <span className="text-gray-500">Showing only schools within isochrone areas</span>
                 </p>
@@ -210,13 +237,26 @@ export default function Home() {
             </div>
           ) : (
             <Map
-              schools={schools}
+              schools={sortedSchoolsWithPositions}
               selectedOrigin={selectedOrigin}
               isochroneData={isochroneData}
               onOriginSelect={setSelectedOrigin}
             />
           )}
         </main>
+
+        {/* School List Panel */}
+        {!schoolsLoading && (
+          <SchoolList
+            schools={sortedSchoolsWithPositions}
+            sortMetric={sortMetric}
+            onSortChange={setSortMetric}
+            isVisible={rightPanelVisible}
+            onToggleVisibility={() => setRightPanelVisible(!rightPanelVisible)}
+            width={rightPanelWidth}
+            onWidthChange={setRightPanelWidth}
+          />
+        )}
       </div>
     </div>
   );
