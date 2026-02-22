@@ -8,6 +8,8 @@ interface TimeRangeSelectorProps {
   customTime: number | null;
   onPresetToggle: (minutes: number) => void;
   onCustomTimeChange: (minutes: number | null) => void;
+  arrivalTime: string; // HH:mm format
+  onArrivalTimeChange: (time: string) => void;
 }
 
 const PRESET_OPTIONS = [5, 10, 15, 30, 60];
@@ -18,13 +20,21 @@ export default function TimeRangeSelector({
   customTime,
   onPresetToggle,
   onCustomTimeChange,
+  arrivalTime,
+  onArrivalTimeChange,
 }: TimeRangeSelectorProps) {
   const [pendingCustomTime, setPendingCustomTime] = useState<string>(customTime?.toString() ?? '');
+  const [pendingArrivalTime, setPendingArrivalTime] = useState<string>(arrivalTime);
 
   // Sync local state when customTime changes externally
   useEffect(() => {
     setPendingCustomTime(customTime?.toString() ?? '');
   }, [customTime]);
+
+  // Sync local state when arrivalTime changes externally
+  useEffect(() => {
+    setPendingArrivalTime(arrivalTime);
+  }, [arrivalTime]);
 
   const handleApply = () => {
     const value = pendingCustomTime.trim();
@@ -41,6 +51,16 @@ export default function TimeRangeSelector({
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleApply();
+    }
+  };
+
+  const handleArrivalTimeApply = () => {
+    onArrivalTimeChange(pendingArrivalTime);
+  };
+
+  const handleArrivalTimeKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleArrivalTimeApply();
     }
   };
 
@@ -90,6 +110,28 @@ export default function TimeRangeSelector({
           <button
             type="button"
             onClick={handleApply}
+            className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+          >
+            Apply
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+          Arrival Time:
+        </label>
+        <div className="flex gap-2">
+          <input
+            type="time"
+            value={pendingArrivalTime}
+            onChange={(e) => setPendingArrivalTime(e.target.value)}
+            onKeyPress={handleArrivalTimeKeyPress}
+            className="flex-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            type="button"
+            onClick={handleArrivalTimeApply}
             className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
           >
             Apply

@@ -36,6 +36,7 @@ export interface IsochroneRequest {
   coordinates: [number, number]; // [lng, lat]
   profile: TransportProfile;
   ranges: number[]; // in seconds
+  arrival?: string; // ISO 8601 timestamp for arrival time
 }
 
 export interface IsochroneResponse {

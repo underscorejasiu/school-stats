@@ -6,7 +6,7 @@ const ORS_API_URL = 'https://api.openrouteservice.org/v2/isochrones';
 export async function POST(request: NextRequest) {
   try {
     const body: IsochroneRequest = await request.json();
-    const { coordinates, profile, ranges } = body;
+    const { coordinates, profile, ranges, arrival } = body;
 
     const apiKey = process.env.OPENROUTESERVICE_API_KEY;
 
@@ -18,12 +18,18 @@ export async function POST(request: NextRequest) {
     }
 
     // OpenRouteService expects coordinates in [lng, lat] format
-    const requestBody = {
+    const requestBody: any = {
       locations: [coordinates],
       range: ranges,
       range_type: 'time',
       units: 'm',
     };
+
+    // Add arrival time if provided
+    if (arrival) {
+      requestBody.location_type = 'arrival';
+      requestBody.arrival = arrival;
+    }
 
     const response = await fetch(`${ORS_API_URL}/${profile}`, {
       method: 'POST',
