@@ -18,7 +18,25 @@ A Next.js application that displays an interactive map with school pins in Wroc≈
 - **Styling**: Tailwind CSS
 - **Map Library**: Leaflet with react-leaflet
 - **Isochrone API**: OpenRouteService
+- **Analytics**: Google Analytics 4
 - **Deployment**: Vercel
+
+## Google Analytics
+
+The application includes Google Analytics 4 (GA4) integration for tracking user interactions. To enable it:
+
+1. Create a Google Analytics 4 property in your [Google Analytics account](https://analytics.google.com/)
+2. Get your Measurement ID (format: `G-XXXXXXXXXX`)
+3. Add it to your `.env.local` file as `NEXT_PUBLIC_GA_ID`
+
+The following events are automatically tracked:
+- **Origin Selection**: When users select a point on the map
+- **Isochrone Generation**: When isochrones are generated (includes transport mode and time range)
+- **School List Interactions**: Sorting, filtering, and focusing on schools
+- **Filter Changes**: When users change filter settings
+- **Page Views**: Automatic page view tracking
+
+You can also use the analytics utility functions in `lib/analytics.ts` to track custom events.
 
 ## Getting Started
 
@@ -44,6 +62,7 @@ npm install
 3. Create a `.env.local` file in the root directory:
 ```bash
 OPENROUTESERVICE_API_KEY=your_api_key_here
+NEXT_PUBLIC_GA_ID=your_google_analytics_id_here  # Optional: G-XXXXXXXXXX or UA-XXXXXXXXX-X
 ```
 
 4. Generate geocoded school data (first time setup):
@@ -141,6 +160,7 @@ Create a `.env.local` file (or set in Vercel dashboard):
 
 ```
 OPENROUTESERVICE_API_KEY=your_api_key_here
+NEXT_PUBLIC_GA_ID=your_google_analytics_id_here  # Optional: G-XXXXXXXXXX
 ```
 
 ## Development
