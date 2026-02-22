@@ -65,6 +65,7 @@ export default function Home() {
   const [apiKey, setApiKey] = useState<string>('');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isInstructionsOpen, setIsInstructionsOpen] = useState(true);
+  const [hasMadeInitialSelection, setHasMadeInitialSelection] = useState(false);
   const mapInstanceRef = useRef<L.Map | null>(null);
 
   // Load API key from localStorage on mount
@@ -447,7 +448,14 @@ export default function Home() {
               schools={sortedSchoolsWithPositions}
               selectedOrigin={selectedOrigin}
               isochroneData={isochroneData}
-              onOriginSelect={setSelectedOrigin}
+              onOriginSelect={(origin) => {
+                setSelectedOrigin(origin);
+                // On mobile, open settings panel after first selection
+                if (isMobile && !hasMadeInitialSelection) {
+                  setHasMadeInitialSelection(true);
+                  setLeftPanelVisible(true);
+                }
+              }}
               onMapReady={handleMapReady}
             />
           )}
