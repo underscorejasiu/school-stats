@@ -24,7 +24,7 @@ export default function Home() {
   const [schools, setSchools] = useState<School[]>([]);
   const [selectedOrigin, setSelectedOrigin] = useState<[number, number] | null>(null);
   const [transportMode, setTransportMode] = useState<TransportProfile>('driving-car');
-  const [selectedPresets, setSelectedPresets] = useState<number[]>([]);
+  const [selectedPreset, setSelectedPreset] = useState<number | null>(null);
   const [customTime, setCustomTime] = useState<number | null>(null);
   const [rushHours, setRushHours] = useState<boolean>(false);
   const [isochroneData, setIsochroneData] = useState<IsochroneResponse | null>(null);
@@ -66,20 +66,21 @@ export default function Home() {
       return;
     }
 
-    // Combine presets and custom time, convert to seconds
+    // Use single preset or custom time (mutually exclusive)
     // Apply 35% reduction if rush hours is enabled
-    const timeRanges: number[] = [
-      ...selectedPresets.map((min) => {
-        const adjustedMin = rushHours ? Math.round(min * 0.65) : min;
-        return adjustedMin * 60;
-      }),
-      ...(customTime ? [Math.round((rushHours ? customTime * 0.65 : customTime) * 60)] : []),
-    ];
-
-    if (timeRanges.length === 0) {
+    let timeRange: number;
+    if (selectedPreset !== null) {
+      const adjustedMin = rushHours ? Math.round(selectedPreset * 0.65) : selectedPreset;
+      timeRange = adjustedMin * 60;
+    } else if (customTime !== null) {
+      const adjustedMin = rushHours ? Math.round(customTime * 0.65) : customTime;
+      timeRange = adjustedMin * 60;
+    } else {
       setIsochroneData(null);
       return;
     }
+
+    const timeRanges: number[] = [timeRange];
 
     setIsLoading(true);
     setError(null);
@@ -110,16 +111,16 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  }, [selectedOrigin, transportMode, selectedPresets, customTime, rushHours]);
+  }, [selectedOrigin, transportMode, selectedPreset, customTime, rushHours]);
 
-  useEffect(() => {
-    fetchIsochrones();
-  }, [fetchIsochrones]);
-
-  const handlePresetToggle = (minutes: number) => {
-    setSelectedPresets((prev) =>
-      prev.includes(minutes) ? prev.filter((m) => m !== minutes) : [...prev, minutes]
-    );
+  const handlePresetSelect = (minutes: number) => {
+    // If clicking the same preset, clear it; otherwise replace with new selection
+    if (selectedPreset === minutes) {
+      setSelectedPreset(null);
+    } else {
+      setSelectedPreset(minutes);
+      setCustomTime(null); // Clear custom time when preset is selected
+    }
   };
 
   // Filter visible schools based on isochrones and user filters
@@ -175,7 +176,7 @@ export default function Home() {
 
   const handleReset = useCallback(() => {
     setSelectedOrigin(null);
-    setSelectedPresets([]);
+    setSelectedPreset(null);
     setCustomTime(null);
     setRushHours(false);
     setIsochroneData(null);
@@ -228,13 +229,17 @@ export default function Home() {
             <TransportSelector value={transportMode} onChange={setTransportMode} />
 
             <TimeRangeSelector
-              presets={selectedPresets}
-              selectedPresets={selectedPresets}
+              selectedPreset={selectedPreset}
               customTime={customTime}
-              onPresetToggle={handlePresetToggle}
-              onCustomTimeChange={setCustomTime}
+              onPresetSelect={handlePresetSelect}
+              onCustomTimeChange={(time) => {
+                setCustomTime(time);
+                setSelectedPreset(null); // Clear preset when custom time is set
+              }}
               rushHours={rushHours}
               onRushHoursChange={setRushHours}
+              isLoading={isLoading}
+              onApply={fetchIsochrones}
             />
 
             {selectedOrigin && (
