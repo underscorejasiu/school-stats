@@ -520,6 +520,7 @@ export default function Home() {
               onMapReady={handleMapReady}
               onSetNewOrigin={fetchIsochronesWithCoordinates}
               onResetSelection={handleReset}
+              isLoading={isLoading}
             />
           )}
         </main>

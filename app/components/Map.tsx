@@ -27,6 +27,7 @@ interface MapProps {
   onMapReady?: (map: L.Map) => void;
   onSetNewOrigin?: (coordinates: [number, number]) => void;
   onResetSelection?: () => void;
+  isLoading?: boolean;
 }
 
 /**
@@ -79,6 +80,7 @@ function IsochroneLayer({
   onResetSelection?: () => void;
 }) {
   const map = useMap();
+  const clickedPointRef = useRef<[number, number] | null>(null);
   
   if (!data) return null;
 
@@ -125,6 +127,15 @@ function IsochroneLayer({
               weight: 2,
               opacity: 0.8,
             }}
+            eventHandlers={{
+              click: (e) => {
+                // Capture the clicked coordinates
+                const { lat, lng } = e.latlng;
+                clickedPointRef.current = [lng, lat];
+                // Stop event propagation to prevent map click handler from firing
+                e.originalEvent.stopPropagation();
+              },
+            }}
           >
             <Popup>
               <div className="text-sm space-y-2">
@@ -134,8 +145,11 @@ function IsochroneLayer({
                 {onSetNewOrigin && (
                   <button
                     onClick={() => {
-                      onSetNewOrigin(center);
+                      // Use clicked point if available, otherwise fall back to center
+                      const coordinates = clickedPointRef.current || center;
+                      onSetNewOrigin(coordinates);
                       map.closePopup();
+                      clickedPointRef.current = null; // Reset after use
                     }}
                     className="w-full px-3 py-1.5 text-xs font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors"
                   >
@@ -224,6 +238,7 @@ export default function Map({
   onMapReady,
   onSetNewOrigin,
   onResetSelection,
+  isLoading = false,
 }: MapProps) {
   const [isClient, setIsClient] = useState(false);
 
@@ -247,6 +262,17 @@ export default function Map({
 
   return (
     <div className="w-full h-full relative">
+      {/* Loading overlay */}
+      {isLoading && (
+        <div className="absolute inset-0 bg-black/20 dark:bg-black/40 z-[1000] flex items-center justify-center">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg px-6 py-4 flex items-center gap-3">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+            <span className="text-gray-700 dark:text-gray-300 font-medium">
+              Loading isochrones...
+            </span>
+          </div>
+        </div>
+      )}
       <MapContainer
         center={center}
         zoom={13}
