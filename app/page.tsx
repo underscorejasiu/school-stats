@@ -155,13 +155,18 @@ export default function Home() {
 
       const data: IsochroneResponse = await response.json();
       setIsochroneData(data);
+      
+      // On mobile, hide settings panel after applying
+      if (isMobile) {
+        setLeftPanelVisible(false);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       setIsochroneData(null);
     } finally {
       setIsLoading(false);
     }
-  }, [selectedOrigin, transportMode, selectedPreset, customTime, rushHours]);
+  }, [selectedOrigin, transportMode, selectedPreset, customTime, rushHours, apiKey, isMobile]);
 
   const handlePresetSelect = (minutes: number) => {
     // If clicking the same preset, clear it; otherwise replace with new selection
