@@ -439,36 +439,79 @@ export default function SchoolList({
                             Year-by-Year:
                           </div>
                           <div className="space-y-2">
-                            {yearlyResults.map(({ year, data }) => (
-                              <div
-                                key={year}
-                                className="bg-gray-50 dark:bg-gray-800 p-2 rounded"
-                              >
-                                <div className="font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                  {year}
+                            {yearlyResults.map(({ year, data }) => {
+                              // Calculate total candidates (unique count across subjects)
+                              const candidates = new Set<number>();
+                              if (data.polish?.candidates_count) candidates.add(data.polish.candidates_count);
+                              if (data.math?.candidates_count) candidates.add(data.math.candidates_count);
+                              if (data.english?.candidates_count) candidates.add(data.english.candidates_count);
+                              const totalCandidates = Math.max(...Array.from(candidates));
+
+                              return (
+                                <div
+                                  key={year}
+                                  className="bg-gray-50 dark:bg-gray-800 p-2 rounded"
+                                >
+                                  <div className="flex items-center justify-between mb-1">
+                                    <div className="font-medium text-gray-700 dark:text-gray-300">
+                                      {year}
+                                    </div>
+                                    {totalCandidates > 0 && (
+                                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                                        {totalCandidates} candidates
+                                      </div>
+                                    )}
+                                  </div>
+                                  <div className="space-y-1 text-xs">
+                                    {data.polish && (
+                                      <div className="flex items-center justify-between">
+                                        <div>
+                                          <span className="text-gray-600 dark:text-gray-400">Polish:</span>{' '}
+                                          <span className="font-medium">
+                                            {formatValue(data.polish.average_result)}
+                                          </span>
+                                        </div>
+                                        {data.polish.candidates_count && (
+                                          <span className="text-gray-500 dark:text-gray-400 text-xs">
+                                            ({data.polish.candidates_count})
+                                          </span>
+                                        )}
+                                      </div>
+                                    )}
+                                    {data.math && (
+                                      <div className="flex items-center justify-between">
+                                        <div>
+                                          <span className="text-gray-600 dark:text-gray-400">Math:</span>{' '}
+                                          <span className="font-medium">
+                                            {formatValue(data.math.average_result)}
+                                          </span>
+                                        </div>
+                                        {data.math.candidates_count && (
+                                          <span className="text-gray-500 dark:text-gray-400 text-xs">
+                                            ({data.math.candidates_count})
+                                          </span>
+                                        )}
+                                      </div>
+                                    )}
+                                    {data.english && (
+                                      <div className="flex items-center justify-between">
+                                        <div>
+                                          <span className="text-gray-600 dark:text-gray-400">English:</span>{' '}
+                                          <span className="font-medium">
+                                            {formatValue(data.english.average_result)}
+                                          </span>
+                                        </div>
+                                        {data.english.candidates_count && (
+                                          <span className="text-gray-500 dark:text-gray-400 text-xs">
+                                            ({data.english.candidates_count})
+                                          </span>
+                                        )}
+                                      </div>
+                                    )}
+                                  </div>
                                 </div>
-                                <div className="grid grid-cols-3 gap-2 text-xs">
-                                  {data.polish && (
-                                    <div>
-                                      <span className="text-gray-600 dark:text-gray-400">P:</span>{' '}
-                                      {formatValue(data.polish.average_result)}
-                                    </div>
-                                  )}
-                                  {data.math && (
-                                    <div>
-                                      <span className="text-gray-600 dark:text-gray-400">M:</span>{' '}
-                                      {formatValue(data.math.average_result)}
-                                    </div>
-                                  )}
-                                  {data.english && (
-                                    <div>
-                                      <span className="text-gray-600 dark:text-gray-400">E:</span>{' '}
-                                      {formatValue(data.english.average_result)}
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            ))}
+                              );
+                            })}
                           </div>
                         </div>
                       )}
