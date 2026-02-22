@@ -33,6 +33,10 @@ export default function Home() {
   const [sortMetric, setSortMetric] = useState<SortMetric>('last_4_years_avg_avg_all');
   const [rightPanelVisible, setRightPanelVisible] = useState(true);
   const [rightPanelWidth, setRightPanelWidth] = useState(384); // Default: w-96 = 384px
+  const [filters, setFilters] = useState<{ isPublic: 'any' | 'true' | 'false'; isForYouth: 'any' | 'true' | 'false' }>({
+    isPublic: 'any',
+    isForYouth: 'any',
+  });
   const mapInstanceRef = useRef<L.Map | null>(null);
 
   // Load schools on mount
@@ -113,15 +117,42 @@ export default function Home() {
     );
   };
 
-  // Filter visible schools based on isochrones
+  // Filter visible schools based on isochrones and user filters
   const visibleSchools = useMemo(() => {
-    if (!isochroneData || !isochroneData.features.length) {
-      return schools;
+    let filtered = schools;
+
+    // Apply isochrone filter
+    if (isochroneData && isochroneData.features.length) {
+      filtered = filtered.filter((school) =>
+        isPointInIsochrone(school.coordinates, isochroneData)
+      );
     }
-    return schools.filter((school) =>
-      isPointInIsochrone(school.coordinates, isochroneData)
-    );
-  }, [schools, isochroneData]);
+
+    // Apply public school filter
+    if (filters.isPublic !== 'any') {
+      filtered = filtered.filter((school) => {
+        if (filters.isPublic === 'true') {
+          return school.public === 'Tak';
+        } else {
+          return school.public !== 'Tak';
+        }
+      });
+    }
+
+    // Apply "dla młodzieży" type filter
+    if (filters.isForYouth !== 'any') {
+      filtered = filtered.filter((school) => {
+        const isForYouth = school.type === 'dla młodzieży';
+        if (filters.isForYouth === 'true') {
+          return isForYouth;
+        } else {
+          return !isForYouth;
+        }
+      });
+    }
+
+    return filtered;
+  }, [schools, isochroneData, filters]);
 
   const handleMapReady = useCallback((map: L.Map) => {
     mapInstanceRef.current = map;
@@ -273,6 +304,8 @@ export default function Home() {
             width={rightPanelWidth}
             onWidthChange={setRightPanelWidth}
             onFocusSchool={handleFocusSchool}
+            filters={filters}
+            onFiltersChange={setFilters}
           />
         )}
       </div>

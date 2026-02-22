@@ -4,6 +4,13 @@ import { useState, useEffect, useRef } from 'react';
 import { SchoolWithPosition, SortMetric } from '@/lib/types';
 import { getSortMetricLabel, getLast4YearsAverages } from '@/lib/statistics';
 
+type FilterValue = 'any' | 'true' | 'false';
+
+interface SchoolFilters {
+  isPublic: FilterValue;
+  isForYouth: FilterValue; // "dla młodzieży"
+}
+
 interface SchoolListProps {
   schools: SchoolWithPosition[];
   sortMetric: SortMetric;
@@ -13,6 +20,8 @@ interface SchoolListProps {
   width: number;
   onWidthChange: (width: number) => void;
   onFocusSchool?: (school: SchoolWithPosition) => void;
+  filters: SchoolFilters;
+  onFiltersChange: (filters: SchoolFilters) => void;
 }
 
 const SORT_OPTIONS: SortMetric[] = [
@@ -47,6 +56,8 @@ export default function SchoolList({
   width,
   onWidthChange,
   onFocusSchool,
+  filters,
+  onFiltersChange,
 }: SchoolListProps) {
   const [expandedSchools, setExpandedSchools] = useState<Set<string>>(new Set());
   const [isResizing, setIsResizing] = useState(false);
@@ -212,6 +223,42 @@ export default function SchoolList({
             />
           </svg>
         </button>
+      </div>
+
+      {/* Filters */}
+      <div className="p-4 border-b border-gray-200 dark:border-gray-800 space-y-3">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Public School:
+          </label>
+          <select
+            value={filters.isPublic}
+            onChange={(e) =>
+              onFiltersChange({ ...filters, isPublic: e.target.value as FilterValue })
+            }
+            className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="any">Any</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Type: "dla młodzieży"
+          </label>
+          <select
+            value={filters.isForYouth}
+            onChange={(e) =>
+              onFiltersChange({ ...filters, isForYouth: e.target.value as FilterValue })
+            }
+            className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="any">Any</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+        </div>
       </div>
 
       {/* Sort Selector */}

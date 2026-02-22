@@ -28,6 +28,7 @@ export interface School {
   coordinates: [number, number]; // [lng, lat]
   address?: string;
   type?: string;
+  public?: string; // "Tak" or "Nie" (Yes/No in Polish)
   yearly_results?: YearlyResults;
 }
 

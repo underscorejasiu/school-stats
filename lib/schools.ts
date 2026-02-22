@@ -63,6 +63,7 @@ function transformSchoolData(rawSchool: RawSchoolData): School | null {
     coordinates: rawSchool.coordinates,
     address: rawSchool.address ? `${rawSchool.address}, ${rawSchool.city}` : undefined,
     type: rawSchool.type || undefined,
+    public: rawSchool.public || undefined,
     yearly_results: rawSchool.yearly_results || undefined,
   };
 }
