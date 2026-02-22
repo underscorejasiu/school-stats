@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents, GeoJSON } from 'react-leaflet';
 import L from 'leaflet';
 import { School } from '@/lib/types';
 import { IsochroneResponse } from '@/lib/types';
+import { isPointInIsochrone } from '@/lib/geometry';
 
 // Fix for default marker icons in Next.js
 const defaultIcon = L.icon({
@@ -89,6 +90,19 @@ export default function Map({ schools, selectedOrigin, isochroneData, onOriginSe
     setIsClient(true);
   }, []);
 
+  // Filter schools to only show those within isochrone polygons when isochrones are active
+  const visibleSchools = useMemo(() => {
+    if (!isochroneData || !isochroneData.features.length) {
+      // No isochrones active, show all schools
+      return schools;
+    }
+
+    // Filter schools that are within any isochrone polygon
+    return schools.filter((school) =>
+      isPointInIsochrone(school.coordinates, isochroneData)
+    );
+  }, [schools, isochroneData]);
+
   // Wrocław center coordinates
   const center: [number, number] = [51.1079, 17.0385];
 
@@ -115,8 +129,8 @@ export default function Map({ schools, selectedOrigin, isochroneData, onOriginSe
         
         <MapClickHandler onOriginSelect={onOriginSelect} />
 
-        {/* School markers */}
-        {schools.map((school) => (
+        {/* School markers - only show schools within isochrone when isochrones are active */}
+        {visibleSchools.map((school) => (
           <Marker key={school.id} position={[school.coordinates[1], school.coordinates[0]]}>
             <Popup>
               <div className="text-sm">

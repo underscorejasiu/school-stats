@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import { School, TransportProfile, IsochroneResponse } from '@/lib/types';
+import { isPointInIsochrone } from '@/lib/geometry';
 import TransportSelector from './components/TransportSelector';
 import TimeRangeSelector from './components/TimeRangeSelector';
 
@@ -105,6 +106,16 @@ export default function Home() {
     );
   };
 
+  // Calculate visible schools count when isochrones are active
+  const visibleSchoolsCount = useMemo(() => {
+    if (!isochroneData || !isochroneData.features.length) {
+      return schools.length;
+    }
+    return schools.filter((school) =>
+      isPointInIsochrone(school.coordinates, isochroneData)
+    ).length;
+  }, [schools, isochroneData]);
+
   return (
     <div className="flex flex-col h-screen w-full">
       {/* Header */}
@@ -158,6 +169,19 @@ export default function Home() {
               <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
                 <p className="text-sm text-yellow-700 dark:text-yellow-400">
                   Loading isochrones...
+                </p>
+              </div>
+            )}
+
+            {isochroneData && isochroneData.features.length > 0 && (
+              <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Schools in Range:
+                </p>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  {visibleSchoolsCount} of {schools.length} schools visible
+                  <br />
+                  <span className="text-gray-500">Showing only schools within isochrone areas</span>
                 </p>
               </div>
             )}
