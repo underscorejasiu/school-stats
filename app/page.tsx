@@ -287,9 +287,6 @@ export default function Home() {
 
   const handleReset = useCallback(() => {
     setSelectedOrigin(null);
-    setSelectedPreset(null);
-    setCustomTime(null);
-    setRushHours(false);
     setIsochroneData(null);
   }, []);
 
