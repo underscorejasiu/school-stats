@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useMemo } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, GeoJSON } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, GeoJSON, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { SchoolWithPosition } from '@/lib/types';
 import { IsochroneResponse } from '@/lib/types';
@@ -24,6 +24,7 @@ interface MapProps {
   selectedOrigin: [number, number] | null;
   isochroneData: IsochroneResponse | null;
   onOriginSelect: (coordinates: [number, number]) => void;
+  onMapReady?: (map: L.Map) => void;
 }
 
 /**
@@ -102,7 +103,19 @@ function IsochroneLayer({ data }: { data: IsochroneResponse | null }) {
   );
 }
 
-export default function Map({ schools, selectedOrigin, isochroneData, onOriginSelect }: MapProps) {
+function MapInstance({ onMapReady }: { onMapReady?: (map: L.Map) => void }) {
+  const map = useMap();
+  
+  useEffect(() => {
+    if (map && onMapReady) {
+      onMapReady(map);
+    }
+  }, [map, onMapReady]);
+  
+  return null;
+}
+
+export default function Map({ schools, selectedOrigin, isochroneData, onOriginSelect, onMapReady }: MapProps) {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -136,6 +149,7 @@ export default function Map({ schools, selectedOrigin, isochroneData, onOriginSe
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         
+        <MapInstance onMapReady={onMapReady} />
         <MapClickHandler onOriginSelect={onOriginSelect} />
 
         {/* School markers - only show schools within isochrone when isochrones are active */}

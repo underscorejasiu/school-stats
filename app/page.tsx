@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import L from 'leaflet';
 import dynamic from 'next/dynamic';
 import { School, TransportProfile, IsochroneResponse, SortMetric, SchoolWithPosition } from '@/lib/types';
 import { isPointInIsochrone } from '@/lib/geometry';
@@ -32,6 +33,7 @@ export default function Home() {
   const [sortMetric, setSortMetric] = useState<SortMetric>('last_4_years_avg_avg_all');
   const [rightPanelVisible, setRightPanelVisible] = useState(true);
   const [rightPanelWidth, setRightPanelWidth] = useState(384); // Default: w-96 = 384px
+  const mapInstanceRef = useRef<L.Map | null>(null);
 
   // Load schools on mount
   useEffect(() => {
@@ -120,6 +122,20 @@ export default function Home() {
       isPointInIsochrone(school.coordinates, isochroneData)
     );
   }, [schools, isochroneData]);
+
+  const handleMapReady = useCallback((map: L.Map) => {
+    mapInstanceRef.current = map;
+  }, []);
+
+  const handleFocusSchool = useCallback((school: SchoolWithPosition) => {
+    if (mapInstanceRef.current) {
+      const [lng, lat] = school.coordinates;
+      mapInstanceRef.current.setView([lat, lng], 16, {
+        animate: true,
+        duration: 0.5,
+      });
+    }
+  }, []);
 
   // Sort and position schools based on selected metric
   const sortedSchoolsWithPositions = useMemo(() => {
@@ -241,6 +257,7 @@ export default function Home() {
               selectedOrigin={selectedOrigin}
               isochroneData={isochroneData}
               onOriginSelect={setSelectedOrigin}
+              onMapReady={handleMapReady}
             />
           )}
         </main>
@@ -255,6 +272,7 @@ export default function Home() {
             onToggleVisibility={() => setRightPanelVisible(!rightPanelVisible)}
             width={rightPanelWidth}
             onWidthChange={setRightPanelWidth}
+            onFocusSchool={handleFocusSchool}
           />
         )}
       </div>
