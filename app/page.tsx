@@ -35,9 +35,29 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [schoolsLoading, setSchoolsLoading] = useState(true);
   const [sortMetric, setSortMetric] = useState<SortMetric>('last_4_years_avg_avg_all');
-  const [rightPanelVisible, setRightPanelVisible] = useState(true);
+  const [rightPanelVisible, setRightPanelVisible] = useState(false);
   const [rightPanelWidth, setRightPanelWidth] = useState(384); // Default: w-96 = 384px
-  const [leftPanelVisible, setLeftPanelVisible] = useState(true);
+  const [leftPanelVisible, setLeftPanelVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile on mount and set initial panel states
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768; // Tailwind's md breakpoint
+      setIsMobile(mobile);
+      if (mobile) {
+        setLeftPanelVisible(false);
+        setRightPanelVisible(false);
+      } else {
+        setLeftPanelVisible(true);
+        setRightPanelVisible(true);
+      }
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   const [filters, setFilters] = useState<{ isPublic: 'any' | 'true' | 'false'; isForYouth: 'any' | 'true' | 'false' }>({
     isPublic: 'any',
     isForYouth: 'true',
@@ -243,11 +263,11 @@ export default function Home() {
         {!leftPanelVisible && (
           <button
             onClick={() => setLeftPanelVisible(true)}
-            className="fixed left-0 top-1/2 -translate-y-1/2 z-50 bg-blue-500 text-white px-2 py-8 rounded-r-lg shadow-lg hover:bg-blue-600 transition-colors"
+            className="fixed left-0 top-1/2 -translate-y-1/2 z-50 bg-blue-500 text-white px-2 py-4 rounded-r-lg shadow-lg hover:bg-blue-600 transition-colors flex flex-col items-center justify-center gap-1"
             aria-label="Show controls panel"
           >
             <svg
-              className="w-6 h-6"
+              className="w-5 h-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -259,6 +279,9 @@ export default function Home() {
                 d="M9 5l7 7-7 7"
               />
             </svg>
+            <span className="text-xs font-medium writing-vertical-rl text-center" style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}>
+              Settings
+            </span>
           </button>
         )}
 

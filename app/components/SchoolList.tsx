@@ -162,11 +162,11 @@ export default function SchoolList({
     return (
       <button
         onClick={onToggleVisibility}
-        className="fixed right-0 top-1/2 -translate-y-1/2 z-50 bg-blue-500 text-white px-2 py-8 rounded-l-lg shadow-lg hover:bg-blue-600 transition-colors"
+        className="fixed right-0 top-1/2 -translate-y-1/2 z-50 bg-blue-500 text-white px-2 py-4 rounded-l-lg shadow-lg hover:bg-blue-600 transition-colors flex flex-col items-center justify-center gap-1"
         aria-label="Show school list"
       >
         <svg
-          className="w-6 h-6"
+          className="w-5 h-5 rotate-180"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -178,6 +178,9 @@ export default function SchoolList({
             d="M9 5l7 7-7 7"
           />
         </svg>
+        <span className="text-xs font-medium writing-vertical-rl text-center" style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}>
+          School List
+        </span>
       </button>
     );
   }
@@ -210,7 +213,7 @@ export default function SchoolList({
           aria-label="Hide school list"
         >
           <svg
-            className="w-5 h-5 text-gray-600 dark:text-gray-400"
+            className="w-5 h-5 text-gray-600 dark:text-gray-400 rotate-180"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
