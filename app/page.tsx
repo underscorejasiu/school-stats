@@ -168,6 +168,62 @@ export default function Home() {
     }
   }, [selectedOrigin, transportMode, selectedPreset, customTime, rushHours, apiKey, isMobile]);
 
+  // Function to fetch isochrones with specific coordinates
+  const fetchIsochronesWithCoordinates = useCallback(async (coordinates: [number, number]) => {
+    // Use single preset or custom time (mutually exclusive)
+    // Apply 35% reduction if rush hours is enabled
+    let timeRange: number;
+    if (selectedPreset !== null) {
+      const adjustedMin = rushHours ? Math.round(selectedPreset * 0.65) : selectedPreset;
+      timeRange = adjustedMin * 60;
+    } else if (customTime !== null) {
+      const adjustedMin = rushHours ? Math.round(customTime * 0.65) : customTime;
+      timeRange = adjustedMin * 60;
+    } else {
+      setIsochroneData(null);
+      return;
+    }
+
+    const timeRanges: number[] = [timeRange];
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/isochrones', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          coordinates: coordinates,
+          profile: transportMode,
+          ranges: timeRanges,
+          apiKey: apiKey || undefined, // Only send if provided
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to fetch isochrones');
+      }
+
+      const data: IsochroneResponse = await response.json();
+      setIsochroneData(data);
+      setSelectedOrigin(coordinates); // Update origin after successful fetch
+      
+      // On mobile, hide settings panel after applying
+      if (isMobile) {
+        setLeftPanelVisible(false);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+      setIsochroneData(null);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [transportMode, selectedPreset, customTime, rushHours, apiKey, isMobile]);
+
   const handlePresetSelect = (minutes: number) => {
     // If clicking the same preset, clear it; otherwise replace with new selection
     if (selectedPreset === minutes) {
@@ -462,6 +518,8 @@ export default function Home() {
                 }
               }}
               onMapReady={handleMapReady}
+              onSetNewOrigin={fetchIsochronesWithCoordinates}
+              onResetSelection={handleReset}
             />
           )}
         </main>

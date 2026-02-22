@@ -25,6 +25,8 @@ interface MapProps {
   isochroneData: IsochroneResponse | null;
   onOriginSelect: (coordinates: [number, number]) => void;
   onMapReady?: (map: L.Map) => void;
+  onSetNewOrigin?: (coordinates: [number, number]) => void;
+  onResetSelection?: () => void;
 }
 
 /**
@@ -67,11 +69,38 @@ function MapClickHandler({ onOriginSelect }: { onOriginSelect: (coords: [number,
   return null;
 }
 
-function IsochroneLayer({ data }: { data: IsochroneResponse | null }) {
+function IsochroneLayer({ 
+  data, 
+  onSetNewOrigin, 
+  onResetSelection 
+}: { 
+  data: IsochroneResponse | null;
+  onSetNewOrigin?: (coordinates: [number, number]) => void;
+  onResetSelection?: () => void;
+}) {
+  const map = useMap();
+  
   if (!data) return null;
 
   // Create a unique key based on the data to force re-render when data changes
-  const dataKey = JSON.stringify(data.features.map(f => f.properties.value).sort());
+  // Include both time values and first coordinate to detect origin changes
+  const dataKey = JSON.stringify({
+    times: data.features.map(f => f.properties.value).sort(),
+    firstCoord: data.features[0]?.geometry.coordinates[0]?.[0] || [],
+  });
+
+  // Helper function to calculate center of polygon
+  const getPolygonCenter = (coordinates: number[][][]): [number, number] => {
+    // Get the first ring (outer boundary) of the polygon
+    const ring = coordinates[0];
+    let sumLat = 0;
+    let sumLng = 0;
+    for (const coord of ring) {
+      sumLng += coord[0];
+      sumLat += coord[1];
+    }
+    return [sumLng / ring.length, sumLat / ring.length];
+  };
 
   return (
     <>
@@ -79,10 +108,15 @@ function IsochroneLayer({ data }: { data: IsochroneResponse | null }) {
         const timeSeconds = feature.properties.value;
         const color = getColorForTime(timeSeconds);
         const minutes = Math.round(timeSeconds / 60);
+        
+        // Get center coordinates - use property center if available, otherwise calculate
+        const center: [number, number] = feature.properties.center 
+          ? [feature.properties.center[0], feature.properties.center[1]]
+          : getPolygonCenter(feature.geometry.coordinates);
 
         return (
           <GeoJSON
-            key={`${dataKey}-${index}-${timeSeconds}`}
+            key={`${dataKey}-${index}-${timeSeconds}-${center[0]}-${center[1]}`}
             data={feature.geometry as any}
             style={{
               fillColor: color,
@@ -93,10 +127,32 @@ function IsochroneLayer({ data }: { data: IsochroneResponse | null }) {
             }}
           >
             <Popup>
-              <div className="text-sm">
-                <strong>{minutes} minutes</strong>
-                <br />
-                Reachable area
+              <div className="text-sm space-y-2">
+                <div className="font-medium mb-2">
+                  <strong>{minutes} minutes</strong> reachable area
+                </div>
+                {onSetNewOrigin && (
+                  <button
+                    onClick={() => {
+                      onSetNewOrigin(center);
+                      map.closePopup();
+                    }}
+                    className="w-full px-3 py-1.5 text-xs font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors"
+                  >
+                    Set as new origin point
+                  </button>
+                )}
+                {onResetSelection && (
+                  <button
+                    onClick={() => {
+                      onResetSelection();
+                      map.closePopup();
+                    }}
+                    className="w-full px-3 py-1.5 text-xs font-medium text-white bg-gray-600 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 transition-colors"
+                  >
+                    Reset Selection
+                  </button>
+                )}
               </div>
             </Popup>
           </GeoJSON>
@@ -118,7 +174,57 @@ function MapInstance({ onMapReady }: { onMapReady?: (map: L.Map) => void }) {
   return null;
 }
 
-export default function Map({ schools, selectedOrigin, isochroneData, onOriginSelect, onMapReady }: MapProps) {
+function OriginPopupContent({
+  selectedOrigin,
+  onSetNewOrigin,
+  onResetSelection,
+}: {
+  selectedOrigin: [number, number];
+  onSetNewOrigin?: (coordinates: [number, number]) => void;
+  onResetSelection?: () => void;
+}) {
+  const map = useMap();
+  
+  return (
+    <div className="text-sm space-y-2">
+      <div className="font-medium mb-2">
+        <strong>Selected Origin</strong>
+      </div>
+      {onSetNewOrigin && (
+        <button
+          onClick={() => {
+            onSetNewOrigin(selectedOrigin);
+            map.closePopup();
+          }}
+          className="w-full px-3 py-1.5 text-xs font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors"
+        >
+          Set as new origin point
+        </button>
+      )}
+      {onResetSelection && (
+        <button
+          onClick={() => {
+            onResetSelection();
+            map.closePopup();
+          }}
+          className="w-full px-3 py-1.5 text-xs font-medium text-white bg-gray-600 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 transition-colors"
+        >
+          Reset Selection
+        </button>
+      )}
+    </div>
+  );
+}
+
+export default function Map({ 
+  schools, 
+  selectedOrigin, 
+  isochroneData, 
+  onOriginSelect, 
+  onMapReady,
+  onSetNewOrigin,
+  onResetSelection,
+}: MapProps) {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -210,17 +316,25 @@ export default function Map({ schools, selectedOrigin, isochroneData, onOriginSe
             })}
           >
             <Popup>
-              <div className="text-sm">
-                <strong>Selected Origin</strong>
-                <br />
-                Click map to change
-              </div>
+              <OriginPopupContent
+                selectedOrigin={selectedOrigin}
+                onSetNewOrigin={onSetNewOrigin}
+                onResetSelection={onResetSelection}
+              />
             </Popup>
           </Marker>
         )}
 
         {/* Isochrone polygons */}
-        <IsochroneLayer key={isochroneData ? JSON.stringify(isochroneData.features.map(f => f.properties.value).sort()) : 'no-data'} data={isochroneData} />
+        <IsochroneLayer 
+          key={isochroneData && selectedOrigin ? JSON.stringify({
+            times: isochroneData.features.map(f => f.properties.value).sort(),
+            origin: selectedOrigin, // Include origin to force re-render when origin changes
+          }) : 'no-data'} 
+          data={isochroneData}
+          onSetNewOrigin={onSetNewOrigin}
+          onResetSelection={onResetSelection}
+        />
       </MapContainer>
     </div>
   );
