@@ -10,6 +10,7 @@ import TransportSelector from './components/TransportSelector';
 import TimeRangeSelector from './components/TimeRangeSelector';
 import SchoolList from './components/SchoolList';
 import SettingsModal from './components/SettingsModal';
+import { metadata } from './layout';
 
 // Dynamically import Map component to avoid SSR issues
 const Map = dynamic(() => import('./components/Map'), {
@@ -227,10 +228,10 @@ export default function Home() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-              School Stats - Isochrone Map
+              Wrocław schools map
             </h1>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              Click on the map to select a position and view reachable areas
+              Click on the map to select a position and generate areas reachable within specified time.
             </p>
           </div>
           <button
