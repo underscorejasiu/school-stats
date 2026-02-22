@@ -27,7 +27,7 @@ export default function Home() {
   const [transportMode, setTransportMode] = useState<TransportProfile>('driving-car');
   const [selectedPreset, setSelectedPreset] = useState<number | null>(null);
   const [customTime, setCustomTime] = useState<number | null>(null);
-  const [rushHours, setRushHours] = useState<boolean>(false);
+  const [rushHours, setRushHours] = useState<boolean>(true);
   const [isochroneData, setIsochroneData] = useState<IsochroneResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,7 +37,7 @@ export default function Home() {
   const [rightPanelWidth, setRightPanelWidth] = useState(384); // Default: w-96 = 384px
   const [filters, setFilters] = useState<{ isPublic: 'any' | 'true' | 'false'; isForYouth: 'any' | 'true' | 'false' }>({
     isPublic: 'any',
-    isForYouth: 'any',
+    isForYouth: 'true',
   });
   const [apiKey, setApiKey] = useState<string>('');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
