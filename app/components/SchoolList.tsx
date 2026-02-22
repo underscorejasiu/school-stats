@@ -49,9 +49,12 @@ export default function SchoolList({
   const [expandedSchools, setExpandedSchools] = useState<Set<string>>(new Set());
   const [isResizing, setIsResizing] = useState(false);
   const resizeRef = useRef<{ startX: number; startWidth: number } | null>(null);
+  const panelRef = useRef<HTMLElement | null>(null);
+  const rafRef = useRef<number | null>(null);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     setIsResizing(true);
     resizeRef.current = {
       startX: e.clientX,
@@ -63,30 +66,57 @@ export default function SchoolList({
     if (!isResizing) return;
 
     const handleMouseMove = (e: MouseEvent) => {
-      if (!resizeRef.current) return;
+      if (!resizeRef.current || !panelRef.current) return;
       
-      const deltaX = resizeRef.current.startX - e.clientX; // Inverted because we're dragging from right side
-      const newWidth = Math.max(320, Math.min(800, resizeRef.current.startWidth + deltaX)); // Min 320px, max 800px
-      onWidthChange(newWidth);
+      // Cancel any pending animation frame
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+      
+      // Use requestAnimationFrame for smooth updates
+      rafRef.current = requestAnimationFrame(() => {
+        if (!resizeRef.current || !panelRef.current) return;
+        
+        const deltaX = resizeRef.current.startX - e.clientX; // Inverted because we're dragging from right side
+        const newWidth = Math.max(320, Math.min(800, resizeRef.current.startWidth + deltaX)); // Min 320px, max 800px
+        
+        // Update DOM directly for immediate visual feedback
+        panelRef.current.style.width = `${newWidth}px`;
+        
+        // Update state (throttled - only on animation frame)
+        onWidthChange(newWidth);
+      });
     };
 
     const handleMouseUp = () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
       setIsResizing(false);
       resizeRef.current = null;
     };
 
-    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('mouseup', handleMouseUp);
     document.body.style.cursor = 'col-resize';
     document.body.style.userSelect = 'none';
+    document.body.style.pointerEvents = 'none';
+    if (panelRef.current) {
+      panelRef.current.style.pointerEvents = 'auto';
+    }
     
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
       document.body.style.cursor = '';
       document.body.style.userSelect = '';
+      document.body.style.pointerEvents = '';
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
     };
-  }, [isResizing, onWidthChange]);
+  }, [isResizing, onWidthChange, width]);
 
   const toggleExpand = (schoolId: string) => {
     setExpandedSchools((prev) => {
@@ -141,8 +171,12 @@ export default function SchoolList({
 
   return (
     <aside
-      className="bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-800 flex flex-col transition-all duration-300 relative"
-      style={{ width: `${width}px` }}
+      ref={(el) => { panelRef.current = el; }}
+      className="bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-800 flex flex-col relative"
+      style={{ 
+        width: `${width}px`,
+        transition: isResizing ? 'none' : 'width 0.2s ease-out'
+      }}
     >
       {/* Resize Handle */}
       <div
