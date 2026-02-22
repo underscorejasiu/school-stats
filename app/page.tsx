@@ -10,6 +10,7 @@ import TransportSelector from './components/TransportSelector';
 import TimeRangeSelector from './components/TimeRangeSelector';
 import SchoolList from './components/SchoolList';
 import SettingsModal from './components/SettingsModal';
+import InstructionsModal from './components/InstructionsModal';
 import { metadata } from './layout';
 
 // Dynamically import Map component to avoid SSR issues
@@ -36,18 +37,29 @@ export default function Home() {
   const [sortMetric, setSortMetric] = useState<SortMetric>('last_4_years_avg_avg_all');
   const [rightPanelVisible, setRightPanelVisible] = useState(true);
   const [rightPanelWidth, setRightPanelWidth] = useState(384); // Default: w-96 = 384px
+  const [leftPanelVisible, setLeftPanelVisible] = useState(true);
   const [filters, setFilters] = useState<{ isPublic: 'any' | 'true' | 'false'; isForYouth: 'any' | 'true' | 'false' }>({
     isPublic: 'any',
     isForYouth: 'true',
   });
   const [apiKey, setApiKey] = useState<string>('');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isInstructionsOpen, setIsInstructionsOpen] = useState(true);
   const mapInstanceRef = useRef<L.Map | null>(null);
 
   // Load API key from localStorage on mount
   useEffect(() => {
     const storedApiKey = localStorage.getItem('openrouteservice_api_key') || '';
     setApiKey(storedApiKey);
+  }, []);
+
+  // Show instructions modal on first visit
+  useEffect(() => {
+    const hasSeenInstructions = localStorage.getItem('has_seen_instructions');
+    if (!hasSeenInstructions) {
+      setIsInstructionsOpen(true);
+      localStorage.setItem('has_seen_instructions', 'true');
+    }
   }, []);
 
   // Save API key to localStorage when it changes
@@ -226,15 +238,62 @@ export default function Home() {
       {/* Header */}
 
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden relative">
+        {/* Left Panel Toggle Button (when hidden) */}
+        {!leftPanelVisible && (
+          <button
+            onClick={() => setLeftPanelVisible(true)}
+            className="fixed left-0 top-1/2 -translate-y-1/2 z-50 bg-blue-500 text-white px-2 py-8 rounded-r-lg shadow-lg hover:bg-blue-600 transition-colors"
+            aria-label="Show controls panel"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+        )}
+
         {/* Controls Panel */}
-        <aside className="w-80 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 p-4 overflow-y-auto">
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                Settings
-              </h2>
-            </div>
+        <aside
+          className={`bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 overflow-y-auto transition-all duration-300 ${
+            leftPanelVisible ? 'w-80' : 'w-0 p-0 overflow-hidden'
+          }`}
+        >
+          {leftPanelVisible && (
+            <div className="p-4 space-y-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                  Settings
+                </h2>
+                <button
+                  onClick={() => setLeftPanelVisible(false)}
+                  className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors"
+                  aria-label="Hide controls panel"
+                >
+                  <svg
+                    className="w-5 h-5 text-gray-600 dark:text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                </button>
+              </div>
 
             <TransportSelector value={transportMode} onChange={setTransportMode} />
 
@@ -299,18 +358,27 @@ export default function Home() {
               </button>
             </div>
 
+            {/* Instructions Button */}
             <div className="pt-4 border-t border-gray-200 dark:border-gray-800">
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                <strong>Instructions:</strong>
-                <br />
-                1. Click anywhere on the map to set the origin point
-                <br />
-                2. Select transport method
-                <br />
-                3. Choose time range presets or enter custom time
-                <br />
-                4. Colored polygons show reachable areas
-              </p>
+              <button
+                onClick={() => setIsInstructionsOpen(true)}
+                className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span>Instructions</span>
+              </button>
             </div>
 
             {/* Settings Button */}
@@ -341,7 +409,8 @@ export default function Home() {
                 <span>Advanced</span>
               </button>
             </div>
-          </div>
+            </div>
+          )}
         </aside>
 
         {/* Map */}
@@ -384,6 +453,12 @@ export default function Home() {
         onClose={() => setIsSettingsOpen(false)}
         apiKey={apiKey}
         onApiKeyChange={handleApiKeyChange}
+      />
+
+      {/* Instructions Modal */}
+      <InstructionsModal
+        isOpen={isInstructionsOpen}
+        onClose={() => setIsInstructionsOpen(false)}
       />
     </div>
   );
