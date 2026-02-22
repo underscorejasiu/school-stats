@@ -1,5 +1,7 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+
 interface TimeRangeSelectorProps {
   presets: number[];
   selectedPresets: number[];
@@ -17,6 +19,31 @@ export default function TimeRangeSelector({
   onPresetToggle,
   onCustomTimeChange,
 }: TimeRangeSelectorProps) {
+  const [pendingCustomTime, setPendingCustomTime] = useState<string>(customTime?.toString() ?? '');
+
+  // Sync local state when customTime changes externally
+  useEffect(() => {
+    setPendingCustomTime(customTime?.toString() ?? '');
+  }, [customTime]);
+
+  const handleApply = () => {
+    const value = pendingCustomTime.trim();
+    if (value === '') {
+      onCustomTimeChange(null);
+    } else {
+      const numValue = parseInt(value, 10);
+      if (!isNaN(numValue) && numValue >= 1 && numValue <= 120) {
+        onCustomTimeChange(numValue);
+      }
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleApply();
+    }
+  };
+
   return (
     <div className="space-y-4">
       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -47,18 +74,27 @@ export default function TimeRangeSelector({
         <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
           Custom Time (minutes):
         </label>
-        <input
-          type="number"
-          min="1"
-          max="120"
-          value={customTime ?? ''}
-          onChange={(e) => {
-            const value = e.target.value;
-            onCustomTimeChange(value === '' ? null : parseInt(value, 10));
-          }}
-          placeholder="Enter custom time"
-          className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        <div className="flex gap-2">
+          <input
+            type="number"
+            min="1"
+            max="120"
+            value={pendingCustomTime}
+            onChange={(e) => {
+              setPendingCustomTime(e.target.value);
+            }}
+            onKeyPress={handleKeyPress}
+            placeholder="Enter custom time"
+            className="flex-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            type="button"
+            onClick={handleApply}
+            className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+          >
+            Apply
+          </button>
+        </div>
       </div>
     </div>
   );

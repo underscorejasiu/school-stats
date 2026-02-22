@@ -168,6 +168,13 @@ export default function Home() {
     }
   }, []);
 
+  const handleReset = useCallback(() => {
+    setSelectedOrigin(null);
+    setSelectedPresets([]);
+    setCustomTime(null);
+    setIsochroneData(null);
+  }, []);
+
   // Sort and position schools based on selected metric
   const sortedSchoolsWithPositions = useMemo(() => {
     const schoolsWithValues = visibleSchools.map((school) => ({
@@ -259,6 +266,15 @@ export default function Home() {
                 </p>
               </div>
             )}
+
+            <div className="pt-4 border-t border-gray-200 dark:border-gray-800">
+              <button
+                onClick={handleReset}
+                className="w-full px-4 py-2 text-sm font-medium text-white bg-gray-600 dark:bg-gray-700 rounded-md hover:bg-gray-700 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+              >
+                Reset Selection
+              </button>
+            </div>
 
             <div className="pt-4 border-t border-gray-200 dark:border-gray-800">
               <p className="text-xs text-gray-500 dark:text-gray-400">
