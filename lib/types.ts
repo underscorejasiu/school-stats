@@ -37,6 +37,7 @@ export interface IsochroneRequest {
   profile: TransportProfile;
   ranges: number[]; // in seconds
   arrival?: string; // ISO 8601 timestamp for arrival time
+  apiKey?: string; // Optional user-provided API key
 }
 
 export interface IsochroneResponse {

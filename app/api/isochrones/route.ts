@@ -6,9 +6,10 @@ const ORS_API_URL = 'https://api.openrouteservice.org/v2/isochrones';
 export async function POST(request: NextRequest) {
   try {
     const body: IsochroneRequest = await request.json();
-    const { coordinates, profile, ranges } = body;
+    const { coordinates, profile, ranges, apiKey: userApiKey } = body;
 
-    const apiKey = process.env.OPENROUTESERVICE_API_KEY;
+    // Use user-provided API key if available, otherwise fall back to environment variable
+    const apiKey = userApiKey || process.env.OPENROUTESERVICE_API_KEY;
 
     if (!apiKey) {
       return NextResponse.json(

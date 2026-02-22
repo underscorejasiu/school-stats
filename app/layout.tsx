@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "School Stats - Isochrone Map",
-  description: "Interactive map showing isochrone travel distances from selected positions to schools in Wrocław, Poland",
+  title: "Wrocław schools map",
+  description: "Click on the map to select a position and generate areas reachable within specified time.",
 };
 
 export default function RootLayout({
