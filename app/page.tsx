@@ -243,6 +243,8 @@ export default function Home() {
       filtered = filtered.filter((school) =>
         isPointInIsochrone(school.coordinates, isochroneData)
       );
+    } else {
+      filtered = []
     }
 
     // Apply public school filter
