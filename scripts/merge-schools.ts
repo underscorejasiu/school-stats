@@ -20,6 +20,7 @@ interface SubjectResults {
 type YearlyResults = Record<string, Record<SubjectName, SubjectResults>>;
 
 interface RawSchoolRecord {
+    'województwo - nazwa': string;
     'powiat - nazwa': string;
     'Gmina - nazwa': string;
     'RSPO': string;
@@ -33,6 +34,7 @@ interface RawSchoolRecord {
 }
 
 interface MergedSchoolInternal {
+    'województwo - nazwa': string;
     'powiat - nazwa': string;
     'Gmina - nazwa': string;
     'RSPO': string;
@@ -46,6 +48,7 @@ interface MergedSchoolInternal {
 }
 
 interface MergedSchoolOutput {
+    wojewodztwo: string;
     powiat: string;
     gmina: string;
     RSPO: string;
@@ -94,6 +97,7 @@ function parseNumber(value: string | undefined | null): number | null {
 // Helper function to rebuild school object with correct field order and renamed fields
 function rebuildSchoolWithOrder(school: MergedSchoolInternal): MergedSchoolOutput {
     const ordered: MergedSchoolOutput = {
+        wojewodztwo: school['województwo - nazwa'],
         powiat: school['powiat - nazwa'],
         gmina: school['Gmina - nazwa'],
         RSPO: school['RSPO'],
@@ -173,6 +177,7 @@ for (const file of files) {
         if (!mergedSchool) {
             // Build object with renamed fields
             mergedSchool = {
+                'województwo - nazwa': school['województwo - nazwa'],
                 'powiat - nazwa': school['powiat - nazwa'],
                 'Gmina - nazwa': school['Gmina - nazwa'],
                 'RSPO': rspo,

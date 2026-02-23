@@ -43,14 +43,6 @@ function loadSchoolsData(): RawSchoolData[] {
  */
 function transformSchoolData(rawSchool: RawSchoolData): School | null {
   // Filter for Wrocław schools
-  const isWroclaw = 
-    rawSchool.powiat === 'Wrocław' || 
-    rawSchool.city === 'Wrocław' ||
-    rawSchool.gmina === 'Wrocław';
-
-  if (!isWroclaw) {
-    return null;
-  }
 
   // Skip schools without coordinates
   if (!rawSchool.coordinates) {

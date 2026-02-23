@@ -3,6 +3,7 @@ import { join } from 'path';
 import { geocodeAddress } from '../lib/geocoding';
 
 interface RawSchoolData {
+  wojewodztwo: string;
   powiat: string;
   gmina: string;
   RSPO: string;
@@ -27,15 +28,9 @@ async function main() {
   const fileContent = readFileSync(dataPath, 'utf-8');
   const rawSchools: RawSchoolData[] = JSON.parse(fileContent);
 
-  // Filter for Wrocław schools
-  const wroclawSchools = rawSchools.filter(
-    school =>
-      school.powiat === 'Wrocław' ||
-      school.city === 'Wrocław' ||
-      school.gmina === 'Wrocław'
-  );
+  const schools = rawSchools;
 
-  console.log(`Found ${wroclawSchools.length} schools in Wrocław`);
+  console.log(`Found ${schools.length} schools in Wrocław`);
 
   console.log('Starting geocoding (this may take a while due to rate limits)...');
   console.log('Progress will be shown below:');
@@ -44,53 +39,42 @@ async function main() {
   let geocoded = 0;
   let failed = 0;
 
-  for (let i = 0; i < wroclawSchools.length; i++) {
-    const school = wroclawSchools[i];
+  for (let i = 0; i < schools.length; i++) {
+    const school = schools[i];
     
     // Skip if already has coordinates
     if (school.coordinates) {
       geocoded++;
-      console.log(`[${i + 1}/${wroclawSchools.length}] ⊙ ${school.name} - Already has coordinates`);
+      console.log(`[${i + 1}/${schools.length}] ⊙ ${school.name} - Already has coordinates`);
       continue;
     }
     
     try {
-      const coordinates = await geocodeAddress(school.address, school.city, 'Dolnośląskie', 'Poland');
+      const coordinates = await geocodeAddress(school.RSPO, school.address, school.city,  school.gmina, school.powiat, school.wojewodztwo, 'Poland');
       school.coordinates = coordinates || undefined;
       
       if (coordinates) {
         geocoded++;
-        console.log(`[${i + 1}/${wroclawSchools.length}] ✓ ${school.name} - ${coordinates}`);
+        console.log(`[${i + 1}/${schools.length}] ✓ ${school.name} - ${coordinates}`);
       } else {
         failed++;
-        console.log(`[${i + 1}/${wroclawSchools.length}] ✗ ${school.name} - Failed to geocode`);
+        console.log(`[${i + 1}/${schools.length}] ✗ ${school.name} - Failed to geocode`);
       }
     } catch (error) {
       failed++;
-      console.error(`[${i + 1}/${wroclawSchools.length}] ✗ Error geocoding ${school.name}:`, error);
+      console.error(`[${i + 1}/${schools.length}] ✗ Error geocoding ${school.name}:`, error);
       school.coordinates = undefined;
     }
   }
 
-  // Create the geocoded output with all schools (not just Wrocław)
-  // But only add coordinates to Wrocław schools
-  const allSchools = rawSchools.map(school => {
-    const wroclawSchool = wroclawSchools.find(ws => ws.RSPO === school.RSPO);
-    if (wroclawSchool && wroclawSchool.coordinates) {
-      return {
-        ...school,
-        coordinates: wroclawSchool.coordinates,
-      };
-    }
-    return school;
-  });
+  const allSchoolsWithCoordinates = rawSchools.filter(school => school.coordinates !== undefined);
 
   // Save merged geocoded file
   const outputPath = join(process.cwd(), 'data', 'output', 'merged-schools-geocoded.json');
-  writeFileSync(outputPath, JSON.stringify(allSchools, null, 2), 'utf-8');
+  writeFileSync(outputPath, JSON.stringify(allSchoolsWithCoordinates, null, 2), 'utf-8');
 
   console.log('\n=== Geocoding Complete ===');
-  console.log(`Total schools processed: ${wroclawSchools.length}`);
+  console.log(`Total schools processed: ${schools.length}`);
   console.log(`Successfully geocoded: ${geocoded}`);
   console.log(`Failed: ${failed}`);
   console.log(`Geocoded file saved to: ${outputPath}`);
